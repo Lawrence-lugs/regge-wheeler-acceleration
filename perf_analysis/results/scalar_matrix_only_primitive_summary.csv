@@ -1,0 +1,3 @@
+experiment,primitive_kind,estimated_latency
+scalar_matrix_only,matrix,11159706000.0
+scalar_matrix_only,scalar,18473126416.0

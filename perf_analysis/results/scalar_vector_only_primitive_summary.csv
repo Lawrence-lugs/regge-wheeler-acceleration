@@ -1,0 +1,3 @@
+experiment,primitive_kind,estimated_latency
+scalar_vector_only,scalar,120772483526.0
+scalar_vector_only,vector,1577983173000.0

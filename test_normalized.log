@@ -1,0 +1,14 @@
+/workspaces/torch_dev/regge_wheeler.py:435: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+/workspaces/torch_dev/regge_wheeler.py:467: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+/workspaces/torch_dev/regge_wheeler.py:477: UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+  plt.show()
+Using CUDA: NVIDIA GeForce RTX 3050 Ti Laptop GPU
+Epoch 0, t<= 0.07, Total: 9.537417e-03, PDE: 9.537e-03, A0: 4.952e-03
+Epoch 300, t<= 20.07, Total: 5.560819e-03, PDE: 5.561e-03, A0: 1.039e-02
+Epoch 600, t<= 40.07, Total: 2.348671e-03, PDE: 2.349e-03, A0: 4.900e-03
+Epoch 900, t<= 60.07, Total: 1.543860e-03, PDE: 1.544e-03, A0: 5.150e-03
+Dominant angular frequency at observer (full window): PINN=0.078, FD=0.392
+Dominant angular frequency at observer (t>=25 window): PINN=0.114, FD=0.343
+Done. Check the raw ψ panel — it should show oscillations even before FFI.

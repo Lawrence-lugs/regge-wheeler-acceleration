@@ -1,0 +1,7 @@
+.vscode/
+
+# Python ignores
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
