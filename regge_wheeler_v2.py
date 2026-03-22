@@ -119,6 +119,9 @@ if __name__ == "__main__":
     optimizer = torch.optim.Adam(model.parameters(), lr=5e-3)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.999)
     
+    # Using a StepLR scheduler to reduce learning rate every 1000 epochs
+    # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=1000, gamma=0.1)
+    
     # Generate Collocation Points
     N_colloc = 3000
     t_colloc = torch.rand(N_colloc, 1) * t_max
@@ -169,30 +172,37 @@ if __name__ == "__main__":
     freqs_fd, h_fd = compute_strain(t_fd, psi_obs_fd)
     freqs_pinn, h_pinn = compute_strain(t_fd, psi_obs_pinn)
 
+
     # 4. Plotting using relative coordinate tracking
-    fig_w, fig_h = 12, 5
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(fig_w, fig_h))
+    fig_w, fig_h = 2.5,4
+    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(fig_w, fig_h), dpi=300)
     
     # Time Domain Plot (Proves oscillation)
     ax1.plot(t_fd, psi_obs_fd, label="FD $\psi(t)$", color='black', linewidth=1.5)
     ax1.plot(t_fd, psi_obs_pinn, label="PINN $\psi(t)$", color='red', linestyle='--', linewidth=1.5)
     ax1.set_xlabel("Time $t$")
-    ax1.set_ylabel("Perturbation Field $\psi(t, r^*=20)$")
+    ax1.set_ylabel("Perturbation Field\n$\psi(t, r^*=20)$")
     
     # Frequency Domain Strain Plot
     ax2.plot(freqs_fd, h_fd, label="FD Strain", color='black', linewidth=1.5)
     ax2.plot(freqs_pinn, h_pinn, label="PINN Strain", color='red', linestyle='--', linewidth=1.5)
-    ax2.set_xlabel("Frequency $\omega / 2\pi$")
-    ax2.set_ylabel("Projected Strain $|\tilde{h}(\omega)|$")
+    ax2.set_xlabel("Frequency (Hz)")
+    ax2.set_ylabel("Projected Strain\n$|\\tilde{h}(\omega)|$")
     ax2.set_yscale('log') # Log scale helps visualize the ringdown frequencies
     
     # Relative positioning variables for text
     rel_x, rel_y_top, rel_y_mid = 0.05, 0.90, 0.82
     
     for ax in [ax1, ax2]:
-        ax.text(rel_x, rel_y_top, "Observer: $r^* = 20M$", transform=ax.transAxes)
-        ax.legend(loc="upper right")
+        # ax.text(rel_x, rel_y_top, "Observer: $r^* = 20M$", transform=ax.transAxes)
+    #     # ax.legend(loc="upper right")
         ax.grid(True, linestyle="--", alpha=0.6)
+
+    # Legend outside the plots
+    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.5), ncol=2, labels=['FD', 'PINN'])
         
     plt.tight_layout()
+    plt.savefig("regge_wheeler_comparison.pdf", dpi=300, bbox_inches='tight')
+
     plt.show()
+

@@ -16,7 +16,6 @@ class VectorConfig:
                 f"Choose one of {self.supported_lanes}."
             )
 
-
 @dataclass(frozen=True)
 class MatrixConfig:
     tile_m: int = 16

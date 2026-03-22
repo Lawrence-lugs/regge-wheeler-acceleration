@@ -182,6 +182,7 @@ def _simulate_network_forward(
             repetitions=repetitions,
         )
 
+    # Execute hidden-to-output layer
     output_weights = np.ones((cfg.hidden_width, cfg.output_width), dtype=np.float32)
     nn_out = executor.matmul(hidden, output_weights, section=f"{section}.dense_out", repetitions=repetitions)
 

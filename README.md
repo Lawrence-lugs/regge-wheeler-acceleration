@@ -6,6 +6,7 @@
     - Models latency of reading the shared data from L1
     - Systolic array delay model for TPU
     - TPU assumed to already contain the weight hierarchy (consistent with an assumption that we train the weights on the spot).
+    - Tiling is performed if Matmul dim is mismatched. The software overhead of managing the tiling is not accounted for. 
 
 - `stream_sim` models the accelerator in [Stream]().
     - Currently WIP.
@@ -15,5 +16,4 @@
 # Issues (in README for now)
 
 - [ ] Updating the weights should be done by the Vector processor
-- [ ] No tiling performed to account for mismatch of TPU size vs Matrix size... 
 - [ ] Fix problems with stream_sim
