@@ -1,0 +1,13 @@
+name: rw_scalar_only_shared_l1
+
+cores:
+  0: stream_sim/inputs/hardware/cores/scalar_rv32imf_core.yaml
+  1: stream_sim/inputs/hardware/cores/shared_l1_offchip.yaml
+
+offchip_core_id: 1
+unit_energy_cost: 0.01
+
+core_connectivity:
+  - type: bus
+    cores: [0, 1]
+    bandwidth: 64

@@ -1,0 +1,38 @@
+name: scalar_rv32imf_core
+type: compute
+
+memories:
+  rf_local:
+    size: 134217728
+    r_cost: 0.015
+    w_cost: 0.015
+    area: 0
+    latency: 1
+    operands: [I1, I2, O]
+    ports:
+      - name: rw_port_1
+        type: read_write
+        bandwidth_min: 256
+        bandwidth_max: 256
+        allocation:
+          - I1, fh
+          - I1, tl
+          - I2, fh
+          - I2, tl
+          - O, fh
+          - O, tl
+          - O, fl
+          - O, th
+    served_dimensions: [D1, D2]
+
+operational_array:
+  unit_energy: 0.01
+  unit_area: 0.02
+  dimensions: [D1, D2]
+  sizes: [1, 1]
+
+dataflows:
+  D1:
+    - B, 1
+  D2:
+    - H, 1

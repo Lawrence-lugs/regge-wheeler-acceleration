@@ -1,2 +1,5 @@
-experiment_dir,latency_cycles,energy_total_pj,energy_cn_onchip_pj,energy_cn_offchip_link_pj,energy_cn_offchip_memory_pj,energy_eviction_offchip_link_pj,energy_eviction_offchip_memory_pj,energy_sink_offchip_link_pj,energy_sink_offchip_memory_pj,energy_core_to_core_link_pj,energy_core_to_core_memory_pj
-pinn_vector_tpu_shared_l1-workload-lbl-genetic_algorithm,2729.0,1266.0800000000004,982.0800000000004,0.0,284.0,0.0,0.0,0.0,0.0,0.0,0.0
+experiment,label,latency_cycles,energy_total_pj,energy_cn_onchip_pj,energy_cn_offchip_memory_pj,matrix_mapped_nodes,vector_mapped_nodes
+scalar_only,Scalar,,,,,0,0
+scalar_tpu,Scalar+TPU,,,,,0,0
+vector_only,Vector,,,,,0,0
+vector_tpu,Vector+TPU,,,,,0,0

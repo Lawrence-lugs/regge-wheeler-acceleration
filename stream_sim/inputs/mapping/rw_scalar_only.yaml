@@ -1,0 +1,32 @@
+- name: default
+  core_allocation: [0]
+
+- name: MatMul
+  core_allocation: [0]
+
+- name: Gemm
+  core_allocation: [0]
+
+- name: Add
+  core_allocation: [0]
+
+- name: Mul
+  core_allocation: [0]
+
+- name: Div
+  core_allocation: [0]
+
+- name: Reciprocal
+  core_allocation: [0]
+
+- name: Pow
+  core_allocation: [0]
+
+- name: Exp
+  core_allocation: [0]
+
+- name: Sigmoid
+  core_allocation: [0]
+
+- name: ReduceMean
+  core_allocation: [0]
