@@ -138,6 +138,7 @@ def _simulate_network_forward(
     t = np.linspace(0.0, cfg.t_max, batch_size, dtype=np.float32).reshape(-1, 1)
     x = np.linspace(cfg.r_star_min, cfg.r_star_max, batch_size, dtype=np.float32).reshape(-1, 1)
 
+    # Input normalization
     t_norm = executor.binary("div", t, np.float32(cfg.t_max), section=f"{section}.normalize", repetitions=repetitions)
     x_shift = executor.binary("sub", x, np.float32(cfg.r_star_min), section=f"{section}.normalize", repetitions=repetitions)
     x_norm = executor.binary(
@@ -148,6 +149,7 @@ def _simulate_network_forward(
         repetitions=repetitions,
     )
 
+    # Fourier embedding
     embed_half = cfg.embedding_features // 2
     inputs = np.concatenate([t_norm, x_norm], axis=1)
     fourier_weights = np.ones((2, embed_half), dtype=np.float32) # fourier weights 1 for now
@@ -159,10 +161,12 @@ def _simulate_network_forward(
     cos_proj = executor.unary("cos", projection, section=f"{section}.embedding", repetitions=repetitions)
     embedding = np.concatenate([sin_proj, cos_proj], axis=1)
 
+    # Execute input-to-hidden layer
     hidden_weights = np.ones((cfg.embedding_features, cfg.hidden_width), dtype=np.float32)
     hidden = executor.matmul(embedding, hidden_weights, section=f"{section}.dense1", repetitions=repetitions)
     hidden = executor.unary("tanh", hidden, section=f"{section}.dense1", repetitions=repetitions)
 
+    # Execute hidden-to-hidden layers
     recurrent_weights = np.ones((cfg.hidden_width, cfg.hidden_width), dtype=np.float32)
     for layer_idx in range(cfg.hidden_layers - 1):
         hidden = executor.matmul(

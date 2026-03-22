@@ -38,6 +38,8 @@ def get_global_stats_frame() -> pd.DataFrame:
                 "elements_per_invocation",
                 "invocations",
                 "latency_per_invocation",
+                "compute_latency",
+                "memory_latency",
                 "estimated_latency",
                 "fallback_from",
                 "notes",
@@ -48,11 +50,19 @@ def get_global_stats_frame() -> pd.DataFrame:
 
 def summarize_stats(frame: pd.DataFrame) -> pd.DataFrame:
     if frame.empty:
-        return pd.DataFrame(columns=["experiment", "primitive_kind", "estimated_latency"])
+        return pd.DataFrame(
+            columns=["experiment", "primitive_kind", "compute_latency", "memory_latency", "estimated_latency"]
+        )
+
+    agg_cols = {"estimated_latency": "sum"}
+    if "compute_latency" in frame.columns:
+        agg_cols["compute_latency"] = "sum"
+    if "memory_latency" in frame.columns:
+        agg_cols["memory_latency"] = "sum"
 
     summary = (
-        frame.groupby(["experiment", "primitive_kind"], dropna=False, as_index=False)["estimated_latency"]
-        .sum()
+        frame.groupby(["experiment", "primitive_kind"], dropna=False, as_index=False)
+        .agg(agg_cols)
         .sort_values(["experiment", "primitive_kind"])
     )
     return summary

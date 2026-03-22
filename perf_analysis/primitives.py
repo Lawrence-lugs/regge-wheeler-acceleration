@@ -31,6 +31,18 @@ class PrimitiveExecutor:
             f"{matrix.tile_m}x{matrix.tile_n}x{matrix.tile_k}_{matrix.dtype_name}"
         )
 
+    # ------------------------------------------------------------------
+    # Memory-bandwidth helper
+    # ------------------------------------------------------------------
+
+    def _memory_cycles(self, total_elements: int) -> float:
+        mem = self.config.memory
+        return math.ceil(total_elements * mem.dtype_bits / mem.l1_bandwidth_bits)
+
+    # ------------------------------------------------------------------
+    # Public primitive API
+    # ------------------------------------------------------------------
+
     def binary(
         self,
         op_name: str,
@@ -52,6 +64,7 @@ class PrimitiveExecutor:
                 total_elements=total_elements,
                 repetitions=repetitions,
                 logical_shape=logical_shape,
+                num_input_operands=2,
                 fallback_from="",
                 notes="elementwise",
             )
@@ -60,6 +73,7 @@ class PrimitiveExecutor:
                 op_name=op_name,
                 section=section,
                 invocations=total_elements * repetitions,
+                total_data_elements=total_elements * 3,
                 logical_shape=logical_shape,
                 fallback_from="vector" if total_elements > 1 else "",
                 notes="elementwise",
@@ -85,6 +99,7 @@ class PrimitiveExecutor:
                 total_elements=total_elements,
                 repetitions=repetitions,
                 logical_shape=logical_shape,
+                num_input_operands=1,
                 fallback_from="",
                 notes="unary",
             )
@@ -93,6 +108,7 @@ class PrimitiveExecutor:
                 op_name=op_name,
                 section=section,
                 invocations=total_elements * repetitions,
+                total_data_elements=total_elements * 2,
                 logical_shape=logical_shape,
                 fallback_from="vector" if total_elements > 1 else "",
                 notes="unary",
@@ -119,6 +135,7 @@ class PrimitiveExecutor:
                 total_elements=length,
                 repetitions=total_repetitions,
                 logical_shape=(length,),
+                num_input_operands=1,
                 fallback_from="",
                 notes="reduction",
             )
@@ -129,15 +146,18 @@ class PrimitiveExecutor:
                     op_name="add",
                     section=section,
                     invocations=partial_adds,
+                    total_data_elements=partial_adds * 3,
                     logical_shape=(1,),
                     fallback_from="vector_reduce_finalize",
                     notes="combine vector partial sums",
                 )
         else:
+            scalar_invocations = max(length - 1, 0) * total_repetitions
             self._log_scalar(
                 op_name="add",
                 section=section,
-                invocations=max(length - 1, 0) * total_repetitions,
+                invocations=scalar_invocations,
+                total_data_elements=length * total_repetitions + total_repetitions,
                 logical_shape=(length,),
                 fallback_from="vector_reduce" if length > 1 else "",
                 notes="scalar reduction",
@@ -170,6 +190,19 @@ class PrimitiveExecutor:
                 * math.ceil(k_dim / tile.tile_k)
                 * repetitions
             )
+            lat_per_tile = self.config.latencies.matrix_tile_latency(
+                tile.tile_m, tile.tile_k, tile.tile_n,
+            )
+            compute_latency = tile_calls * lat_per_tile
+
+            # Memory: activations (m*k) + output (m*n) always from L1.
+            # Weights (k*n) only if NOT local to the matrix unit.
+            mem_elements = m_dim * k_dim + m_dim * n_dim
+            if not self.config.memory.weights_local_to_matrix_unit:
+                mem_elements += k_dim * n_dim
+            memory_latency = float(self._memory_cycles(mem_elements) * repetitions)
+            estimated = max(compute_latency, memory_latency)
+
             append_stat_row(
                 {
                     "experiment": self.capabilities.name,
@@ -181,8 +214,10 @@ class PrimitiveExecutor:
                     "chunk_shape": f"({tile.tile_m}, {tile.tile_k}) x ({tile.tile_k}, {tile.tile_n})",
                     "elements_per_invocation": tile.tile_m * tile.tile_n,
                     "invocations": tile_calls,
-                    "latency_per_invocation": self.config.latencies.matrix,
-                    "estimated_latency": tile_calls * self.config.latencies.matrix,
+                    "latency_per_invocation": lat_per_tile,
+                    "compute_latency": compute_latency,
+                    "memory_latency": memory_latency,
+                    "estimated_latency": estimated,
                     "fallback_from": "",
                     "notes": "tiled matrix primitive",
                 }
@@ -202,10 +237,14 @@ class PrimitiveExecutor:
             self.reduce_sum(sample, section=section, repetitions=repetitions)
             return result.astype(np.float32, copy=False)
 
+        scalar_mul_invocations = dot_products * k_dim * repetitions
+        scalar_add_invocations = dot_products * max(k_dim - 1, 0) * repetitions
+        total_data = (m_dim * k_dim + k_dim * n_dim + m_dim * n_dim) * repetitions
         self._log_scalar(
             op_name="multiply",
             section=section,
-            invocations=dot_products * k_dim * repetitions,
+            invocations=scalar_mul_invocations,
+            total_data_elements=total_data,
             logical_shape=(m_dim, n_dim, k_dim),
             fallback_from="matrix",
             notes="scalar matmul multiply fallback",
@@ -213,12 +252,17 @@ class PrimitiveExecutor:
         self._log_scalar(
             op_name="add",
             section=section,
-            invocations=dot_products * max(k_dim - 1, 0) * repetitions,
+            invocations=scalar_add_invocations,
+            total_data_elements=0,
             logical_shape=(m_dim, n_dim, k_dim),
             fallback_from="matrix",
             notes="scalar matmul accumulation fallback",
         )
         return result.astype(np.float32, copy=False)
+
+    # ------------------------------------------------------------------
+    # Internal logging
+    # ------------------------------------------------------------------
 
     def _log_vector_chunks(
         self,
@@ -228,12 +272,25 @@ class PrimitiveExecutor:
         total_elements: int,
         repetitions: int,
         logical_shape: tuple[int, ...],
+        num_input_operands: int,
         fallback_from: str,
         notes: str,
     ) -> None:
+        lat_per_inv = self.config.latencies.vector_latency(op_name)
+        data_elements_per_rep = total_elements * (num_input_operands + 1)
+        memory_latency_total = float(self._memory_cycles(data_elements_per_rep) * repetitions)
+
         full_chunks, remainder = divmod(total_elements, self.vector_lanes)
+
+        total_invocations = full_chunks * repetitions
+        if remainder:
+            total_invocations += repetitions
+        compute_latency_total = total_invocations * lat_per_inv
+        estimated = max(compute_latency_total, memory_latency_total)
+
         if full_chunks:
             invocations = full_chunks * repetitions
+            frac = invocations / total_invocations if total_invocations else 1.0
             append_stat_row(
                 {
                     "experiment": self.capabilities.name,
@@ -245,13 +302,17 @@ class PrimitiveExecutor:
                     "chunk_shape": str((self.vector_lanes,)),
                     "elements_per_invocation": self.vector_lanes,
                     "invocations": invocations,
-                    "latency_per_invocation": self.config.latencies.vector,
-                    "estimated_latency": invocations * self.config.latencies.vector,
+                    "latency_per_invocation": lat_per_inv,
+                    "compute_latency": invocations * lat_per_inv,
+                    "memory_latency": memory_latency_total * frac,
+                    "estimated_latency": estimated * frac,
                     "fallback_from": fallback_from,
                     "notes": notes,
                 }
             )
         if remainder:
+            invocations = repetitions
+            frac = invocations / total_invocations if total_invocations else 1.0
             append_stat_row(
                 {
                     "experiment": self.capabilities.name,
@@ -262,9 +323,11 @@ class PrimitiveExecutor:
                     "shape": str(logical_shape),
                     "chunk_shape": str((remainder,)),
                     "elements_per_invocation": remainder,
-                    "invocations": repetitions,
-                    "latency_per_invocation": self.config.latencies.vector,
-                    "estimated_latency": repetitions * self.config.latencies.vector,
+                    "invocations": invocations,
+                    "latency_per_invocation": lat_per_inv,
+                    "compute_latency": invocations * lat_per_inv,
+                    "memory_latency": memory_latency_total * frac,
+                    "estimated_latency": estimated * frac,
                     "fallback_from": fallback_from,
                     "notes": f"{notes}; tail loop",
                 }
@@ -276,12 +339,17 @@ class PrimitiveExecutor:
         op_name: str,
         section: str,
         invocations: int,
+        total_data_elements: int,
         logical_shape: tuple[int, ...],
         fallback_from: str,
         notes: str,
     ) -> None:
         if invocations <= 0:
             return
+        lat_per_inv = self.config.latencies.scalar_latency(op_name)
+        compute_latency = invocations * lat_per_inv
+        memory_latency = float(self._memory_cycles(total_data_elements))
+        estimated = max(compute_latency, memory_latency)
         append_stat_row(
             {
                 "experiment": self.capabilities.name,
@@ -293,8 +361,10 @@ class PrimitiveExecutor:
                 "chunk_shape": str((1,)),
                 "elements_per_invocation": 1,
                 "invocations": invocations,
-                "latency_per_invocation": self.config.latencies.scalar,
-                "estimated_latency": invocations * self.config.latencies.scalar,
+                "latency_per_invocation": lat_per_inv,
+                "compute_latency": compute_latency,
+                "memory_latency": memory_latency,
+                "estimated_latency": estimated,
                 "fallback_from": fallback_from,
                 "notes": notes,
             }

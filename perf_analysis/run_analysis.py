@@ -40,6 +40,8 @@ def run_all_experiments(config: AnalysisConfig) -> tuple[dict[str, pd.DataFrame]
         matrix_latency = float(
             frame.loc[frame["primitive_kind"] == "matrix", "estimated_latency"].sum()
         )
+        compute_total = float(frame["compute_latency"].sum()) if "compute_latency" in frame.columns else total_latency
+        memory_total = float(frame["memory_latency"].sum()) if "memory_latency" in frame.columns else 0.0
         latency_rows.append(
             {
                 "experiment": capability.name,
@@ -47,6 +49,8 @@ def run_all_experiments(config: AnalysisConfig) -> tuple[dict[str, pd.DataFrame]
                 "scalar_latency": scalar_latency,
                 "vector_latency": vector_latency,
                 "matrix_latency": matrix_latency,
+                "compute_latency": compute_total,
+                "memory_latency": memory_total,
             }
         )
 
@@ -65,26 +69,63 @@ def write_results(experiment_frames: dict[str, pd.DataFrame], summary: pd.DataFr
 
 def make_total_latency_plot(summary: pd.DataFrame) -> None:
     ordered = summary.sort_values("total_latency", ascending=False)
-    fig, ax = plt.subplots(figsize=(11, 6))
+    fig, ax = plt.subplots(figsize=(4, 3))
     bars = ax.bar(ordered["experiment"], ordered["total_latency"], color=["#5B6C5D", "#C27B58", "#B7A26A", "#6A7FB3"])
-    ax.set_ylabel("Estimated Latency")
-    ax.set_title("Regge-Wheeler v2 Primitive Capability Comparison")
+    ax.set_ylabel("Estimated Latency (Cycles)")
+    # ax.set_title("Regge-Wheeler v2 Primitive Capability Comparison")
     ax.grid(axis="y", linestyle="--", alpha=0.4)
     ax.set_axisbelow(True)
     for bar in bars:
         height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width() / 2.0, height, f"{height:,.0f}", ha="center", va="bottom")
-    fig.tight_layout()
-    fig.savefig(RESULTS_DIR / "latency_totals.png", dpi=160)
-    plt.close(fig)
 
+        # Format in T,G,M,K
+        if height >= 1e12:
+            text = f"{height / 1e12:.1f}T"
+        elif height >= 1e9:
+            text = f"{height / 1e9:.1f}G"
+        elif height >= 1e6:
+            text = f"{height / 1e6:.1f}M"
+        elif height >= 1e3:
+            text = f"{height / 1e3:.1f}K"
+        else:
+            text = f"{height:.0f}"
+        
+        ax.text(bar.get_x() + bar.get_width() / 2.0, height, text, ha="center", va="bottom")
+    
+    # Also format y-axis ticks in T,G,M,K
+    # def format_yticks(value, pos):
+    #     if value >= 1e12:
+    #         return f"{value / 1e12:.1f}T"
+    #     elif value >= 1e9:
+    #         return f"{value / 1e9:.1f}G"
+    #     elif value >= 1e6:
+    #         return f"{value / 1e6:.1f}M"
+    #     elif value >= 1e3:
+    #         return f"{value / 1e3:.1f}K"
+    #     else:
+    #         return f"{value:.0f}"
+    # ax.yaxis.set_major_formatter(plt.FuncFormatter(format_yticks))
+
+    # Rotate x-axis labels for better readability
+    plt.xticks(rotation=45, ha="right")
+
+    ax.set_yscale("log")
+
+    # Raise y limit to make space for annotations
+    current_ylim = ax.get_ylim()
+    ax.set_ylim(0, current_ylim[1] * 10**0.5)
+    
+    fig.tight_layout()
+    fig.savefig(RESULTS_DIR / "latency_totals.png", dpi=300)
+    fig.savefig(RESULTS_DIR / "latency_totals.pdf")
+    plt.close(fig)
 
 def make_ablation_plot(summary: pd.DataFrame) -> None:
     plot_order = ["all_primitives", "scalar_vector_only", "scalar_matrix_only", "scalar_only"]
     ordered = summary.set_index("experiment").loc[plot_order].reset_index()
     baseline = float(ordered.loc[ordered["experiment"] == "all_primitives", "total_latency"].iloc[0])
 
-    fig, ax = plt.subplots(figsize=(11, 6))
+    fig, ax = plt.subplots(figsize=(4, 3))
     bars = ax.bar(ordered["experiment"], ordered["total_latency"], color=["#2F4B3C", "#4F6D7A", "#C17C74", "#D9BF77"])
     ax.set_ylabel("Estimated Latency")
     ax.set_title("Ablation of Vector and Matrix Primitives")

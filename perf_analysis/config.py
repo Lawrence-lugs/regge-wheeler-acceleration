@@ -27,9 +27,52 @@ class MatrixConfig:
 
 @dataclass(frozen=True)
 class LatencyConfig:
-    scalar: float = 1.0
-    vector: float = 6.0
-    matrix: float = 40.0
+    """Per-instruction latency model.
+
+    Most pipelined vector/scalar instructions run at 1 cycle.  Stalling
+    instructions (div, sqrt) carry an explicit per-op override.  Matrix
+    tile latency is computed from the systolic drain formula
+    ``tile_m + tile_k + tile_n - 2``.
+    """
+
+    scalar_default: float = 1.0
+    vector_default: float = 1.0
+    scalar_overrides: tuple[tuple[str, float], ...] = ()
+    vector_overrides: tuple[tuple[str, float], ...] = (
+        ("div", 5.0),
+        ("sqrt", 5.0),
+    )
+
+    def scalar_latency(self, op_name: str) -> float:
+        for name, lat in self.scalar_overrides:
+            if name == op_name:
+                return lat
+        return self.scalar_default
+
+    def vector_latency(self, op_name: str) -> float:
+        for name, lat in self.vector_overrides:
+            if name == op_name:
+                return lat
+        return self.vector_default
+
+    def matrix_tile_latency(self, tile_m: int, tile_k: int, tile_n: int) -> float:
+        return float(tile_m + tile_k + tile_n - 2)
+
+
+@dataclass(frozen=True)
+class MemoryConfig:
+    """L1 memory-bandwidth model.
+
+    All starting tensors are assumed to reside in shared L1.  The
+    bandwidth (``l1_bandwidth_bits``) limits how fast data can be
+    transferred to/from the compute cores.  Weights inside the TPU/GEMM
+    unit are assumed local and do *not* traverse the L1 bus
+    (``weights_local_to_matrix_unit``).
+    """
+
+    l1_bandwidth_bits: int = 1024
+    dtype_bits: int = 32
+    weights_local_to_matrix_unit: bool = True
 
 
 @dataclass(frozen=True)
@@ -65,6 +108,7 @@ class AnalysisConfig:
     vector: VectorConfig = field(default_factory=VectorConfig)
     matrix: MatrixConfig = field(default_factory=MatrixConfig)
     latencies: LatencyConfig = field(default_factory=LatencyConfig)
+    memory: MemoryConfig = field(default_factory=MemoryConfig)
 
     def validate(self) -> None:
         self.vector.validate()

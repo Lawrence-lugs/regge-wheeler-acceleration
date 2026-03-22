@@ -1,9 +1,10 @@
-from .config import AnalysisConfig, CapabilityProfile, LatencyConfig, MatrixConfig, VectorConfig
+from .config import AnalysisConfig, CapabilityProfile, LatencyConfig, MatrixConfig, MemoryConfig, VectorConfig
 
 __all__ = [
     "AnalysisConfig",
     "CapabilityProfile",
     "LatencyConfig",
     "MatrixConfig",
+    "MemoryConfig",
     "VectorConfig",
 ]
