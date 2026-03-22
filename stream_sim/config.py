@@ -91,7 +91,7 @@ EXPERIMENTS: tuple[ExperimentConfig, ...] = (
         label="Vector+TPU",
         hardware_path=HARDWARE_DIR / "rw_vector_tpu_shared_l1.yaml",
         mapping_path=MAPPING_DIR / "rw_vector_tpu.yaml",
-        scalar_core_ids=(),
+        scalar_core_ids=(2,),
         vector_core_ids=(0,),
         matrix_core_ids=(1,),
     ),

@@ -189,22 +189,18 @@ def build_workload(output_path: Path) -> Path:
     fft_signal_shape = [1, 1, 1, cfg.nt]
     fft_shape = [1, 1, 1, cfg.fft_bins]
 
+    # Build tensor values and initializers
     fd_rstar = helper.make_tensor_value_info("fd_rstar", TensorProto.FLOAT, fd_rstar_shape)
     fd_state = helper.make_tensor_value_info("fd_state_seed", TensorProto.FLOAT, fd_state_shape)
     pinn_t = helper.make_tensor_value_info("pinn_t", TensorProto.FLOAT, pinn_scalar_shape)
     pinn_x = helper.make_tensor_value_info("pinn_x", TensorProto.FLOAT, pinn_scalar_shape)
     fft_signal = helper.make_tensor_value_info("fft_signal", TensorProto.FLOAT, fft_signal_shape)
 
-    fourier_scale_t = builder.tensor(
-        "fourier_scale_t",
-        np.ones((1, 1, 1, cfg.fourier_half), dtype=np.float32) * 0.5,
-    )
-    fourier_scale_x = builder.tensor(
-        "fourier_scale_x",
-        np.ones((1, 1, 1, cfg.fourier_half), dtype=np.float32) * 0.5,
-    )
-    hidden_w1_sin = builder.tensor("hidden_w1_sin", np.ones((cfg.fourier_half, cfg.hidden_width), dtype=np.float32))
-    hidden_w1_cos = builder.tensor("hidden_w1_cos", np.ones((cfg.fourier_half, cfg.hidden_width), dtype=np.float32))
+    projection_E_t = builder.tensor("projection_E_t", np.array([[1.0, 0.0]], dtype=np.float32))
+    projection_E_x = builder.tensor("projection_E_x", np.array([[0.0, 1.0]], dtype=np.float32))
+    projection_B_x = builder.tensor("projection_B_x", np.ones((2, cfg.fourier_half), dtype=np.float32))
+    projection_w_sin = builder.tensor("projection_w_sin", np.ones((cfg.fourier_half, cfg.hidden_width), dtype=np.float32))
+    projection_w_cos = builder.tensor("projection_w_cos", np.ones((cfg.fourier_half, cfg.hidden_width), dtype=np.float32))
     hidden_b1 = builder.tensor("hidden_b1", np.zeros((1, 1, 1, cfg.hidden_width), dtype=np.float32))
     hidden_w2 = builder.tensor("hidden_w2", np.ones((cfg.hidden_width, cfg.hidden_width), dtype=np.float32))
     hidden_b2 = builder.tensor("hidden_b2", np.zeros((1, 1, 1, cfg.hidden_width), dtype=np.float32))
@@ -212,7 +208,7 @@ def build_workload(output_path: Path) -> Path:
     output_b = builder.tensor("output_b", np.zeros((1, 1, 1, cfg.output_width), dtype=np.float32))
     output_w_t = builder.tensor("output_w_t", np.ones((cfg.output_width, cfg.hidden_width), dtype=np.float32))
     hidden_w2_t = builder.tensor("hidden_w2_t", np.ones((cfg.hidden_width, cfg.hidden_width), dtype=np.float32))
-    hidden_w1_t = builder.tensor("hidden_w1_t", np.ones((cfg.hidden_width, cfg.fourier_half), dtype=np.float32))
+    hidden_w1_t = builder.tensor("hidden_w1_t", np.ones((cfg.hidden_width, cfg.hidden_width), dtype=np.float32))
     freq_index = np.arange(1, cfg.fft_bins + 1, dtype=np.float32)
     time_index = np.arange(cfg.nt, dtype=np.float32)
     dft_real = np.cos(2.0 * np.pi * np.outer(time_index, freq_index) / cfg.nt).astype(np.float32)
@@ -229,6 +225,7 @@ def build_workload(output_path: Path) -> Path:
         omega_sq,
     )
 
+    # Finite difference graph
     fd_potential = _tortoise_potential(builder, "fd_rstar", "fd_potential")
     fd_pulse = _gaussian(builder, "fd_rstar", "fd_pulse")
     fd_weighted = _mul(builder, "fd_state_seed", fd_potential, "fd_weighted")
@@ -244,6 +241,7 @@ def build_workload(output_path: Path) -> Path:
     omega_inv = _reciprocal(builder, omega_sq_name, "omega_inv")
     fft_strain = _mul(builder, fft_mag, omega_inv, "fft_strain")
 
+    # PINN graph : Fourier Embedding 
     t_tensor = "pinn_t"
     x_tensor = "pinn_x"
     t_norm = _mul_scalar(builder, t_tensor, 1.0 / max(cfg.t_max, 1e-6), "pinn_t_norm")
@@ -254,16 +252,21 @@ def build_workload(output_path: Path) -> Path:
         1.0 / max(cfg.r_star_max - cfg.r_star_min, 1e-6),
         "pinn_x_norm",
     )
-    theta_t = _mul(builder, t_norm, fourier_scale_t, "pinn_fourier_t")
-    theta_x = _mul(builder, x_norm, fourier_scale_x, "pinn_fourier_x")
-    theta = _add(builder, theta_t, theta_x, "pinn_fourier_sum")
+    x_stacked = _matmul(builder, x_norm, projection_E_x, "pinn_tx_expand_x")
+    theta_x = _matmul(builder, x_stacked, projection_B_x, "pinn_projection_x")
+    theta = theta_x
+    theta = _mul_scalar(builder, theta, float(2.0 * np.pi), "pinn_projection_scale")
     theta_fold = _range_reduce_surrogate(builder, theta, "pinn_theta_fold")
     sin_feat = _sin_poly(builder, theta_fold, "pinn_sin_poly")
     cos_feat = _cos_poly(builder, theta_fold, "pinn_cos_poly")
+    h1_sin = _matmul(builder, sin_feat, projection_w_sin, "pinn_proj_sin")
+    h1_cos = _matmul(builder, cos_feat, projection_w_cos, "pinn_proj_cos")
+    embedding = _add(builder, h1_sin, h1_cos, "pinn_projection_merge")
 
-    h1_sin = _matmul(builder, sin_feat, hidden_w1_sin, "pinn_dense1_sin")
-    h1_cos = _matmul(builder, cos_feat, hidden_w1_cos, "pinn_dense1_cos")
-    embedding = _add(builder, h1_sin, h1_cos, "pinn_embedding_sum")
+    # Fallback reference (kept intentionally):
+    # embedding = _matmul(builder, theta, projection_w1, "pinn_projection_matmul")
+
+    # PINN graph : Forward pass
     h1 = _add(builder, embedding, hidden_b1, "pinn_dense1_bias")
     h1 = _tanh_via_sigmoid(builder, h1, "pinn_tanh1")
     h2 = _matmul(builder, h1, hidden_w2, "pinn_dense2")
@@ -272,6 +275,7 @@ def build_workload(output_path: Path) -> Path:
     out = _matmul(builder, h2, output_w, "pinn_dense_out")
     out = _add(builder, out, output_b, "pinn_dense_out_bias")
 
+    # PINN graph : Backward pass and loss
     psi_ic = _gaussian(builder, x_tensor, "pinn_psi_ic")
     one_minus_x = _add_scalar(builder, _negate(builder, x_norm, "pinn_x_neg"), 1.0, "pinn_one_minus_x")
     spatial_bound = _mul(builder, x_norm, one_minus_x, "pinn_spatial_bound")
@@ -287,6 +291,7 @@ def build_workload(output_path: Path) -> Path:
     residual_sq = _pow(builder, residual, 2.0, "pinn_residual_sq")
     pinn_loss = _reduce_mean(builder, residual_sq, "pinn_loss", keepdims=1)
 
+    # PINN graph : Backward pass - Adam updates (only for output layer for now)
     grad_h2 = _matmul(builder, pinn_loss, output_w_t, "pinn_backprop_out")
     h2_sq = _pow(builder, h2, 2.0, "pinn_h2_sq")
     h2_grad = _add_scalar(builder, _negate(builder, h2_sq, "pinn_h2_sq_neg"), 1.0, "pinn_h2_grad")
@@ -297,8 +302,8 @@ def build_workload(output_path: Path) -> Path:
     grad_h1 = _mul(builder, grad_h1, h1_grad, "pinn_grad_h1")
     grad_emb = _matmul(builder, grad_h1, hidden_w1_t, "pinn_backprop_h1")
 
-    grad_w1_sin = _matmul(builder, sin_feat, hidden_w1_sin, "grad_w1_sin")
-    grad_w1_cos = _matmul(builder, cos_feat, hidden_w1_cos, "grad_w1_cos")
+    grad_w1_sin = _matmul(builder, sin_feat, projection_w_sin, "grad_w1_sin")
+    grad_w1_cos = _matmul(builder, cos_feat, projection_w_cos, "grad_w1_cos")
     grad_w2 = _matmul(builder, h1, hidden_w2, "grad_w2")
     grad_w3 = _matmul(builder, h2, output_w, "grad_w3")
     grad_fourier_t = _mul(builder, t_norm, grad_emb, "grad_fourier_t")

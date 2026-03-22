@@ -1,8 +1,14 @@
 - name: default
   core_allocation: [0]
 
+- name: pinn_tx_expand_x_407
+  core_allocation: [2]
+
+- name: pinn_projection_x_409
+  core_allocation: [2]
+
 - name: MatMul
-  core_allocation: [1]
+  core_allocation: [0]
 
 - name: Gemm
   core_allocation: [1]

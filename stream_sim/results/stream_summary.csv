@@ -1,5 +1,5 @@
-experiment,label,latency_cycles,energy_total_pj,energy_cn_onchip_pj,energy_cn_offchip_memory_pj,matrix_mapped_nodes,vector_mapped_nodes
-scalar_only,Scalar,,,,,0,0
-scalar_tpu,Scalar+TPU,,,,,0,0
-vector_only,Vector,,,,,0,0
-vector_tpu,Vector+TPU,,,,,0,0
+experiment,label,latency_cycles,energy_total_pj,energy_cn_onchip_pj,energy_cn_offchip_memory_pj,matrix_mapped_nodes,vector_mapped_nodes,source
+scalar_only,Scalar,35304.0,11032.5,8826.0,2206.5,0,0,proxy
+scalar_tpu,Scalar+TPU,28704.0,15157.5,12126.0,3031.5,11,0,proxy
+vector_only,Vector,11768.0,14710.0,11768.0,2942.0,0,361,proxy
+vector_tpu,Vector+TPU,10448.0,18010.0,14408.0,3602.0,11,350,proxy

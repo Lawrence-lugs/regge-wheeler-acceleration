@@ -35,3 +35,4 @@ operational_array:
 dataflows:
   D1:
     - K, 16
+    - C, 2

@@ -1,1 +1,1 @@
-Expected input shape (200, 300, 1, 32) to be one of [(200, 300, 1, 1), (1, 1, 1, 32)]
+Expected input shape (200, 300, 1, 2) to be one of [(200, 300, 1, 1), (1, 1, 1, 2)]

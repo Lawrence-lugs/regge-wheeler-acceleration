@@ -3,12 +3,13 @@ name: rw_vector_tpu_shared_l1
 cores:
   0: stream_sim/inputs/hardware/cores/vector_simd_core.yaml
   1: stream_sim/inputs/hardware/cores/tpu_like_matmul_core.yaml
-  2: stream_sim/inputs/hardware/cores/shared_l1_offchip.yaml
+  2: stream_sim/inputs/hardware/cores/scalar_rv32imf_core.yaml
+  3: stream_sim/inputs/hardware/cores/shared_l1_offchip.yaml
 
-offchip_core_id: 2
+offchip_core_id: 3
 unit_energy_cost: 0.01
 
 core_connectivity:
   - type: bus
-    cores: [0, 1, 2]
+    cores: [0, 1, 2, 3]
     bandwidth: 256
