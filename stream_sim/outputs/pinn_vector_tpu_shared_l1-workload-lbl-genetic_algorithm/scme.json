@@ -1,0 +1,477 @@
+[
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": "scme",
+    "tid": 0,
+    "args": {
+      "name": "Core 0"
+    },
+    "cname": "blue"
+  },
+  {
+    "name": "rw_dense_gemm (Id: 0, Sub_id: 0)",
+    "cat": "compute",
+    "ph": "X",
+    "ts": 0,
+    "dur": 1157,
+    "pid": "scme",
+    "tid": 0,
+    "cname": "blue",
+    "args": {
+      "Runtime": "1157",
+      "SpatialUtilization": "1.0",
+      "SpatialUtilizationWithTemporal": "0.055507372072853424",
+      "Tensors": {
+        "Tensor(0, 0, W)": "131072",
+        "Tensor(0, 0, I)": "1024"
+      },
+      "Energy": "924.3200000000002",
+      "EnergyTotalPerOp": "0.07228515625000001",
+      "EnergyBreakdownPerOp": {
+        "O": "{'rf_local': 0.0007250976562499999, 'shared_l1': 0.0001220703125}",
+        "I": "{'rf_local': 6.591796875e-05, 'shared_l1': 0.0001220703125}",
+        "W": "{'rf_local': 0.005625, 'shared_l1': 0.015625}"
+      }
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": "scme",
+    "tid": 1,
+    "args": {
+      "name": "Core 1"
+    },
+    "cname": "blue"
+  },
+  {
+    "name": "rw_vector_add (Id: 1, Sub_id: 0)",
+    "cat": "compute",
+    "ph": "X",
+    "ts": 1157,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 1,
+    "cname": "blue",
+    "args": {
+      "Runtime": "393",
+      "SpatialUtilization": "0.0625",
+      "SpatialUtilizationWithTemporal": "0.02056555269922879",
+      "Tensors": {
+        "Tensor(0, 0, O)": "1024",
+        "Tensor(1, 0, W)": "1024"
+      },
+      "Energy": "14.439999999999998",
+      "EnergyTotalPerOp": "0.15968749999999998",
+      "EnergyBreakdownPerOp": {
+        "O": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "I": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "W": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}"
+      }
+    }
+  },
+  {
+    "name": "rw_constraint_mul (Id: 2, Sub_id: 0)",
+    "cat": "compute",
+    "ph": "X",
+    "ts": 1550,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 1,
+    "cname": "blue",
+    "args": {
+      "Runtime": "393",
+      "SpatialUtilization": "0.0625",
+      "SpatialUtilizationWithTemporal": "0.02056555269922879",
+      "Tensors": {
+        "Tensor(1, 0, O)": "1024",
+        "Tensor(2, 0, W)": "1024"
+      },
+      "Energy": "14.439999999999998",
+      "EnergyTotalPerOp": "0.15968749999999998",
+      "EnergyBreakdownPerOp": {
+        "O": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "I": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "W": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}"
+      }
+    }
+  },
+  {
+    "name": "rw_constraint_add (Id: 3, Sub_id: 0)",
+    "cat": "compute",
+    "ph": "X",
+    "ts": 1943,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 1,
+    "cname": "blue",
+    "args": {
+      "Runtime": "393",
+      "SpatialUtilization": "0.0625",
+      "SpatialUtilizationWithTemporal": "0.02056555269922879",
+      "Tensors": {
+        "Tensor(2, 0, O)": "1024",
+        "Tensor(3, 0, W)": "1024"
+      },
+      "Energy": "14.439999999999998",
+      "EnergyTotalPerOp": "0.15968749999999998",
+      "EnergyBreakdownPerOp": {
+        "O": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "I": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "W": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}"
+      }
+    }
+  },
+  {
+    "name": "rw_output_mul (Id: 4, Sub_id: 0)",
+    "cat": "compute",
+    "ph": "X",
+    "ts": 2336,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 1,
+    "cname": "blue",
+    "args": {
+      "Runtime": "393",
+      "SpatialUtilization": "0.0625",
+      "SpatialUtilizationWithTemporal": "0.02056555269922879",
+      "Tensors": {
+        "Tensor(3, 0, O)": "1024",
+        "Tensor(4, 0, W)": "1024"
+      },
+      "Energy": "14.439999999999998",
+      "EnergyTotalPerOp": "0.15968749999999998",
+      "EnergyBreakdownPerOp": {
+        "O": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "I": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}",
+        "W": "{'rf_local': 0.0309375, 'shared_l1': 0.015625}"
+      }
+    }
+  },
+  {
+    "name": "thread_name",
+    "ph": "M",
+    "pid": "scme",
+    "tid": 2,
+    "args": {
+      "name": "Any -> Any"
+    },
+    "cname": "green"
+  },
+  {
+    "name": "Block ({Tensor(0, 0, O): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 0,
+    "dur": 1157,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "1157",
+      "Tensors": {
+        "Tensor(0, 0, O)": "1024"
+      },
+      "Activity": "8.0",
+      "Energy": "260.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(0)",
+      "Receiver": "Core(2)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(0, 0, I): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 0,
+    "dur": 1157,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "1157",
+      "Tensors": {
+        "Tensor(0, 0, I)": "1024"
+      },
+      "Activity": "1.0",
+      "Energy": "260.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(0)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(0, 0, W): 131072})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 0,
+    "dur": 1157,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "1157",
+      "Tensors": {
+        "Tensor(0, 0, W)": "131072"
+      },
+      "Activity": "114.0",
+      "Energy": "260.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(0)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(1, 0, O): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1157,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(1, 0, O)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(1)",
+      "Receiver": "Core(2)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(1, 0, I): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1157,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(1, 0, I)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(1, 0, W): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1157,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(1, 0, W)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(2, 0, O): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1550,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(2, 0, O)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(1)",
+      "Receiver": "Core(2)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(2, 0, I): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1550,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(2, 0, I)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(2, 0, W): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1550,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(2, 0, W)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(3, 0, O): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1943,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(3, 0, O)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(1)",
+      "Receiver": "Core(2)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(3, 0, I): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1943,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(3, 0, I)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(3, 0, W): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 1943,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(3, 0, W)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(4, 0, O): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 2336,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(4, 0, O)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(1)",
+      "Receiver": "Core(2)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(4, 0, I): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 2336,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(4, 0, I)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  },
+  {
+    "name": "Block ({Tensor(4, 0, W): 1024})",
+    "cat": "block",
+    "ph": "X",
+    "ts": 2336,
+    "dur": 393,
+    "pid": "scme",
+    "tid": 2,
+    "cname": "green",
+    "args": {
+      "Runtime": "393",
+      "Tensors": {
+        "Tensor(4, 0, W)": "1024"
+      },
+      "Activity": "3.0",
+      "Energy": "6.0",
+      "LinkBandwidth": "256.0",
+      "Sender": "Core(2)",
+      "Receiver": "Core(1)"
+    }
+  }
+]

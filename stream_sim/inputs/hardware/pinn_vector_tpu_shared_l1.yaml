@@ -1,0 +1,16 @@
+name: pinn_vector_tpu_shared_l1
+
+cores:
+  0: stream_sim/inputs/hardware/cores/tpu_like_matmul_core.yaml
+  1: stream_sim/inputs/hardware/cores/vector_simd_core.yaml
+  2: stream_sim/inputs/hardware/cores/shared_l1_offchip.yaml
+
+offchip_core_id: 2
+unit_energy_cost: 0.01
+
+core_connectivity:
+  # No direct point-to-point links between compute cores.
+  # Both compute cores are coupled only through the shared-L1/offchip memory core.
+  - type: bus
+    cores: [0, 1, 2]
+    bandwidth: 256

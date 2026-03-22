@@ -1,0 +1,33 @@
+name: shared_l1_offchip
+type: memory
+
+memories:
+  shared_l1:
+    # 256 KB shared L1 modeled as Stream offchip memory (size in bits).
+    size: 2097152
+    r_cost: 0.5
+    w_cost: 0.5
+    area: 0
+    latency: 1
+    operands: [I1, I2, O]
+    ports:
+      - name: rw_port_1
+        type: read_write
+        bandwidth_min: 256
+        bandwidth_max: 256
+        allocation:
+          - I1, fh
+          - I1, tl
+          - I2, fh
+          - I2, tl
+          - O, fh
+          - O, tl
+          - O, fl
+          - O, th
+    served_dimensions: [D1, D2]
+
+operational_array:
+  unit_energy: 0
+  unit_area: 0
+  dimensions: [D1, D2]
+  sizes: [0, 0]

@@ -1,0 +1,41 @@
+- name: default
+  core_allocation: [1]
+  intra_core_tiling:
+    - H, all
+  inter_core_tiling:
+    - H, 1
+
+- name: Gemm
+  core_allocation: [0]
+  intra_core_tiling:
+    - D, all
+  inter_core_tiling:
+    - K, 1
+
+- name: MatMul
+  core_allocation: [0]
+  intra_core_tiling:
+    - D, all
+  inter_core_tiling:
+    - K, 1
+
+- name: Add
+  core_allocation: [1]
+  intra_core_tiling:
+    - H, all
+  inter_core_tiling:
+    - H, 1
+
+- name: Mul
+  core_allocation: [1]
+  intra_core_tiling:
+    - H, all
+  inter_core_tiling:
+    - H, 1
+
+- name: LpNormalization
+  core_allocation: [1]
+  intra_core_tiling:
+    - H, all
+  inter_core_tiling:
+    - H, 1

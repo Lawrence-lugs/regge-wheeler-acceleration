@@ -1,0 +1,37 @@
+name: vector_simd_core
+type: compute
+
+memories:
+  rf_local:
+    # Size is in bits: 16 KB local RF.
+    size: 131072
+    r_cost: 0.03
+    w_cost: 0.03
+    area: 0
+    latency: 1
+    operands: [I1, I2, O]
+    ports:
+      - name: rw_port_1
+        type: read_write
+        bandwidth_min: 256
+        bandwidth_max: 256
+        allocation:
+          - I1, fh
+          - I1, tl
+          - I2, fh
+          - I2, tl
+          - O, fh
+          - O, tl
+          - O, fl
+          - O, th
+    served_dimensions: [D1]
+
+operational_array:
+  unit_energy: 0.02
+  unit_area: 0.1
+  dimensions: [D1]
+  sizes: [16]
+
+dataflows:
+  D1:
+    - K, 16

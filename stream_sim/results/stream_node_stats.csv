@@ -1,0 +1,6 @@
+node_id,sub_id,name,operator_type,chosen_core,runtime_cycles,onchip_energy_pj,offchip_energy_pj
+0,0,rw_dense_gemm,gemm,0,1157.0,924.3200000000002,260.0
+1,0,rw_vector_add,add,1,393.0,14.439999999999998,6.0
+2,0,rw_constraint_mul,mul,1,393.0,14.439999999999998,6.0
+3,0,rw_constraint_add,add,1,393.0,14.439999999999998,6.0
+4,0,rw_output_mul,mul,1,393.0,14.439999999999998,6.0

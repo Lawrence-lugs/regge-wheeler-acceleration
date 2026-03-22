@@ -150,7 +150,7 @@ def _simulate_network_forward(
 
     embed_half = cfg.embedding_features // 2
     inputs = np.concatenate([t_norm, x_norm], axis=1)
-    fourier_weights = np.ones((2, embed_half), dtype=np.float32)
+    fourier_weights = np.ones((2, embed_half), dtype=np.float32) # fourier weights 1 for now
     projection = executor.matmul(inputs, fourier_weights, section=f"{section}.embedding", repetitions=repetitions)
     projection = executor.binary(
         "multiply", projection, np.float32(2.0 * np.pi), section=f"{section}.embedding", repetitions=repetitions
