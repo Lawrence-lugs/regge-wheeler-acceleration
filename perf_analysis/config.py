@@ -99,8 +99,13 @@ class AnalysisConfig:
     hidden_layers: int = 2
     output_width: int = 1
     lambert_newton_steps: int = 6
-    pinn_forward_pass_equivalents: int = 5
+    pinn_forward_pass_equivalents: int = 5  # 1 for the forward pass, plus 4 for the equivalent number of vectorized matmuls in the backward pass (assuming 2 hidden layers, which is the default)
     pinn_backward_pass_equivalents: int = 1
+    # v3_rk1_fd: stencil expansion factor packed into a single forward batch.
+    # Example: 5 means each collocation point contributes 5 stencil points
+    # (center, t+dt, t-dt, x+dx, x-dx) in one model forward call.
+    pinn_model_version: str = "v2_autograd"  # "v2_autograd" | "v3_rk1_fd"
+    pinn_rk1_fd_stencil_evals: int = 5
     adam_elementwise_ops: int = 8
     dft_surrogate_repetitions: int = 2
     random_seed: int = 7
@@ -109,10 +114,19 @@ class AnalysisConfig:
     latencies: LatencyConfig = field(default_factory=LatencyConfig)
     memory: MemoryConfig = field(default_factory=MemoryConfig)
 
+    _VALID_PINN_MODEL_VERSIONS = frozenset({"v2_autograd", "v3_rk1_fd"})
+
     def validate(self) -> None:
         self.vector.validate()
         if self.embedding_features % 2 != 0:
             raise ValueError("embedding_features must be even for sin/cos Fourier features.")
+        if self.pinn_model_version not in self._VALID_PINN_MODEL_VERSIONS:
+            raise ValueError(
+                f"Unknown pinn_model_version '{self.pinn_model_version}'. "
+                f"Choose one of {sorted(self._VALID_PINN_MODEL_VERSIONS)}."
+            )
+        if self.pinn_rk1_fd_stencil_evals < 1:
+            raise ValueError("pinn_rk1_fd_stencil_evals must be at least 1.")
 
 
 EXPERIMENTS: tuple[CapabilityProfile, ...] = (

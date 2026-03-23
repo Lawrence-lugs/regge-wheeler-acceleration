@@ -214,33 +214,47 @@ def _simulate_network_forward(
     executor.binary("add", residual, source, section=f"{section}.residual", repetitions=repetitions)
 
 
-def _simulate_network_backward(executor: PrimitiveExecutor, *, batch_size: int, repetitions: int) -> None:
+def _simulate_network_backward(
+    executor: PrimitiveExecutor,
+    *,
+    batch_size: int,
+    repetitions: int,
+    section_prefix: str = "pinn",
+) -> None:
+    """Backpropagation pass through the PINN network.
+
+    ``section_prefix`` lets callers distinguish v2 and v3 backward sections
+    in the stats output (e.g. ``"pinn"`` vs ``"pinn_rk1"``).  All section
+    names are ``{section_prefix}.backward.<layer>``.
+    """
     cfg = executor.config
     embed_half = cfg.embedding_features // 2
     embedding = np.ones((batch_size, cfg.embedding_features), dtype=np.float32)
     hidden = np.ones((batch_size, cfg.hidden_width), dtype=np.float32)
     grad_out = np.ones((batch_size, cfg.output_width), dtype=np.float32)
 
+    bp = f"{section_prefix}.backward"
+
     # Output gradient to obtain gradients for PDE residual loss
     out_weights_t = np.ones((cfg.output_width, cfg.hidden_width), dtype=np.float32)
     hidden_t = np.ones((cfg.hidden_width, batch_size), dtype=np.float32)
-    executor.matmul(hidden_t, grad_out, section="pinn.backward.dense_out_grad", repetitions=repetitions)
+    executor.matmul(hidden_t, grad_out, section=f"{bp}.dense_out_grad", repetitions=repetitions)
     grad_hidden = executor.matmul(
-        grad_out, out_weights_t, section="pinn.backward.dense_out_backprop", repetitions=repetitions
+        grad_out, out_weights_t, section=f"{bp}.dense_out_backprop", repetitions=repetitions
     )
 
     tanh_sq = executor.binary(
-        "multiply", hidden, hidden, section="pinn.backward.tanh_out", repetitions=repetitions
+        "multiply", hidden, hidden, section=f"{bp}.tanh_out", repetitions=repetitions
     )
-    tanh_grad = executor.binary("sub", 1.0, tanh_sq, section="pinn.backward.tanh_out", repetitions=repetitions)
+    tanh_grad = executor.binary("sub", 1.0, tanh_sq, section=f"{bp}.tanh_out", repetitions=repetitions)
     grad_hidden = executor.binary(
-        "multiply", grad_hidden, tanh_grad, section="pinn.backward.tanh_out", repetitions=repetitions
+        "multiply", grad_hidden, tanh_grad, section=f"{bp}.tanh_out", repetitions=repetitions
     )
 
     recurrent_t = np.ones((cfg.hidden_width, batch_size), dtype=np.float32)
     recurrent_w_t = np.ones((cfg.hidden_width, cfg.hidden_width), dtype=np.float32)
     for layer_idx in range(cfg.hidden_layers - 1):
-        prefix = f"pinn.backward.hidden_{layer_idx + 2}"
+        prefix = f"{bp}.hidden_{layer_idx + 2}"
         executor.matmul(recurrent_t, grad_hidden, section=f"{prefix}.weight_grad", repetitions=repetitions)
         grad_hidden = executor.matmul(
             grad_hidden, recurrent_w_t, section=f"{prefix}.backprop", repetitions=repetitions
@@ -255,22 +269,22 @@ def _simulate_network_backward(executor: PrimitiveExecutor, *, batch_size: int, 
 
     embed_t = np.ones((cfg.embedding_features, batch_size), dtype=np.float32)
     hidden_w_t = np.ones((cfg.hidden_width, cfg.embedding_features), dtype=np.float32)
-    executor.matmul(embed_t, grad_hidden, section="pinn.backward.dense1_grad", repetitions=repetitions)
+    executor.matmul(embed_t, grad_hidden, section=f"{bp}.dense1_grad", repetitions=repetitions)
     grad_embedding = executor.matmul(
-        grad_hidden, hidden_w_t, section="pinn.backward.dense1_backprop", repetitions=repetitions
+        grad_hidden, hidden_w_t, section=f"{bp}.dense1_backprop", repetitions=repetitions
     )
 
     proj_grad = np.ones((batch_size, embed_half), dtype=np.float32)
     fourier_input_t = np.ones((2, batch_size), dtype=np.float32)
     fourier_w_t = np.ones((embed_half, 2), dtype=np.float32)
     executor.matmul(
-        fourier_input_t, proj_grad, section="pinn.backward.fourier_grad", repetitions=repetitions
+        fourier_input_t, proj_grad, section=f"{bp}.fourier_grad", repetitions=repetitions
     )
     executor.matmul(
-        proj_grad, fourier_w_t, section="pinn.backward.fourier_backprop", repetitions=repetitions
+        proj_grad, fourier_w_t, section=f"{bp}.fourier_backprop", repetitions=repetitions
     )
     executor.binary(
-        "multiply", grad_embedding, np.float32(1.0), section="pinn.backward.embedding_merge", repetitions=repetitions
+        "multiply", grad_embedding, np.float32(1.0), section=f"{bp}.embedding_merge", repetitions=repetitions
     )
 
 
@@ -296,6 +310,12 @@ def _simulate_adam_updates(executor: PrimitiveExecutor, *, repetitions: int) -> 
 
 
 def simulate_pinn_training(executor: PrimitiveExecutor) -> None:
+    """v2 autograd-heavy PINN training surrogate.
+
+    Forward pass equivalents (``pinn_forward_pass_equivalents``) amortise the
+    create_graph autograd overhead for computing PDE derivatives into the
+    forward section.  Backward pass uses the standard single-pass model.
+    """
     cfg = executor.config
     _simulate_network_forward(
         executor,
@@ -307,6 +327,76 @@ def simulate_pinn_training(executor: PrimitiveExecutor) -> None:
         executor,
         batch_size=cfg.pinn_collocation_points,
         repetitions=cfg.pinn_epochs * cfg.pinn_backward_pass_equivalents,
+        section_prefix="pinn",
+    )
+    _simulate_adam_updates(executor, repetitions=cfg.pinn_epochs)
+
+
+def _simulate_pinn_rk1_fd_combine(
+    executor: PrimitiveExecutor,
+    *,
+    batch_size: int,
+    repetitions: int,
+) -> None:
+    """Finite-difference combination step for the RK1 residual.
+
+    After the stencil forward evaluations, combines the model outputs into
+    ψ_tt and ψ_xx via central-difference formulas, builds the PDE residual,
+    and computes the MSE scalar loss.  All operations are element-wise on
+    (batch_size, 1) tensors — cost is negligible relative to the stencil
+    forward passes and backward pass.
+    """
+    psi = np.ones((batch_size, 1), dtype=np.float32)
+
+    # ψ_tt = (ψ_tp − 2·ψ_c + ψ_tm) / ∆t²  — 3 binary ops + 1 divide
+    twice_c = executor.binary("multiply", psi, 2.0, section="pinn_rk1.fd_combine.psi_tt", repetitions=repetitions)
+    diff_t = executor.binary("sub", psi, twice_c, section="pinn_rk1.fd_combine.psi_tt", repetitions=repetitions)
+    psi_tt = executor.binary("add", diff_t, psi, section="pinn_rk1.fd_combine.psi_tt", repetitions=repetitions)
+    executor.binary("multiply", psi_tt, np.float32(1.0), section="pinn_rk1.fd_combine.psi_tt", repetitions=repetitions)
+
+    # ψ_xx = (ψ_xp − 2·ψ_c + ψ_xm) / ∆x²  — same pattern
+    twice_c = executor.binary("multiply", psi, 2.0, section="pinn_rk1.fd_combine.psi_xx", repetitions=repetitions)
+    diff_x = executor.binary("sub", psi, twice_c, section="pinn_rk1.fd_combine.psi_xx", repetitions=repetitions)
+    psi_xx = executor.binary("add", diff_x, psi, section="pinn_rk1.fd_combine.psi_xx", repetitions=repetitions)
+    executor.binary("multiply", psi_xx, np.float32(1.0), section="pinn_rk1.fd_combine.psi_xx", repetitions=repetitions)
+
+    # residual = ψ_tt − ψ_xx + V·ψ_c
+    res = executor.binary("sub", psi_tt, psi_xx, section="pinn_rk1.fd_combine.residual", repetitions=repetitions)
+    v_psi = executor.binary("multiply", psi, psi, section="pinn_rk1.fd_combine.residual", repetitions=repetitions)
+    residual = executor.binary("add", res, v_psi, section="pinn_rk1.fd_combine.residual", repetitions=repetitions)
+
+    # MSE loss: mean(residual²)
+    res_sq = executor.binary("multiply", residual, residual, section="pinn_rk1.fd_combine.mse", repetitions=repetitions)
+    executor.reduce_sum(res_sq.reshape(1, -1), section="pinn_rk1.fd_combine.mse", repetitions=repetitions)
+
+
+def simulate_pinn_rk1_training(executor: PrimitiveExecutor) -> None:
+    """v3 RK1 finite-difference PINN training surrogate.
+
+    Each training step performs one forward pass and one backward pass.
+    For the forward pass, stencil points are packed into the batch dimension:
+    ``effective_batch = pinn_collocation_points * pinn_rk1_fd_stencil_evals``.
+    There is no ``create_graph`` autograd overhead — PDE derivatives are
+    assembled from the packed forward outputs in ``pinn_rk1.fd_combine.*``.
+    """
+    cfg = executor.config
+    effective_batch = cfg.pinn_collocation_points * cfg.pinn_rk1_fd_stencil_evals
+    _simulate_network_forward(
+        executor,
+        batch_size=effective_batch,
+        section="pinn_rk1.stencil_forward",
+        repetitions=cfg.pinn_epochs,
+    )
+    _simulate_pinn_rk1_fd_combine(
+        executor,
+        batch_size=cfg.pinn_collocation_points,
+        repetitions=cfg.pinn_epochs,
+    )
+    _simulate_network_backward(
+        executor,
+        batch_size=cfg.pinn_collocation_points,
+        repetitions=cfg.pinn_epochs,
+        section_prefix="pinn_rk1",
     )
     _simulate_adam_updates(executor, repetitions=cfg.pinn_epochs)
 
@@ -336,5 +426,8 @@ def simulate_strain_postprocess(executor: PrimitiveExecutor) -> None:
 
 def simulate_full_workload(executor: PrimitiveExecutor) -> None:
     simulate_fd_solver(executor)
-    simulate_pinn_training(executor)
+    if executor.config.pinn_model_version == "v2_autograd":
+        simulate_pinn_training(executor)
+    else:
+        simulate_pinn_rk1_training(executor)
     simulate_strain_postprocess(executor)
