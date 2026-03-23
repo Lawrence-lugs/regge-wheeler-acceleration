@@ -22,10 +22,10 @@
 # Sample Outputs
 ## Regge-Wheeler Comparison
 
-![Regge-Wheeler Comparison](./regge_wheeler_comparison.pdf)
+<img src="./regge_wheeler_comparison.pdf" alt="Regge-Wheeler Comparison" width="800">
 
 ## Performance Analysis Visualizations
 
-![Concatenated Heatmap](./concatenated_heatmap.png)
+![Concatenated Heatmap](perf_analysis/results/sweep_heatmap_concatenated_linear.png)
 
-![Ara Scatter Plot](./ara_scatter.png)
+![Ara Scatter Plot](perf_analysis/results/ara/speedup.png)
