@@ -18,3 +18,14 @@
 
 - [ ] Fix problems with stream_sim
 - [ ] Regge Wheeler v3 with FD stencils for loss computation isn't working so well...
+
+# Sample Outputs
+## Regge-Wheeler Comparison
+
+![Regge-Wheeler Comparison](./regge_wheeler_comparison.pdf)
+
+## Performance Analysis Visualizations
+
+![Concatenated Heatmap](./concatenated_heatmap.png)
+
+![Ara Scatter Plot](./ara_scatter.png)
