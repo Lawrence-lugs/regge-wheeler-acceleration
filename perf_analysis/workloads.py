@@ -186,6 +186,7 @@ def _simulate_network_forward(
     output_weights = np.ones((cfg.hidden_width, cfg.output_width), dtype=np.float32)
     nn_out = executor.matmul(hidden, output_weights, section=f"{section}.dense_out", repetitions=repetitions)
 
+    # Construct hard-coded initial condition + boundary condition satisfying ansatz and add to network output
     psi_ic = _gaussian_pulse(executor, x, section=f"{section}.hard_ansatz", repetitions=repetitions)
     one_minus_x = executor.binary("sub", 1.0, x_norm, section=f"{section}.hard_ansatz", repetitions=repetitions)
     spatial_bound = executor.binary(
@@ -220,6 +221,7 @@ def _simulate_network_backward(executor: PrimitiveExecutor, *, batch_size: int, 
     hidden = np.ones((batch_size, cfg.hidden_width), dtype=np.float32)
     grad_out = np.ones((batch_size, cfg.output_width), dtype=np.float32)
 
+    # Output gradient to obtain gradients for PDE residual loss
     out_weights_t = np.ones((cfg.output_width, cfg.hidden_width), dtype=np.float32)
     hidden_t = np.ones((cfg.hidden_width, batch_size), dtype=np.float32)
     executor.matmul(hidden_t, grad_out, section="pinn.backward.dense_out_grad", repetitions=repetitions)

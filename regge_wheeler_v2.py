@@ -22,7 +22,8 @@ def tortoise_to_r(r_star, M=1.0):
 def V_RW(r_star, M=1.0, l=2, s=2):
     r = tortoise_to_r(r_star, M)
     term1 = 1 - (2 * M / r)
-    term2 = (l * (l + 1) / 2) + (1 - s**2) * (2 * M / r**3)
+    # term2 = (l * (l + 1) / 2) + (1 - s**2) * (2 * M / r**3)
+    term2 = (l * (l + 1) / r^2) + (1 - s**2) * (2 * M / r**3)
     return term1 * term2
 
 # ==========================================
@@ -40,6 +41,7 @@ def solve_fd(r_star_min, r_star_max, t_max, Nx, Nt):
     
     # Gaussian pulse initial condition
     psi[0, :] = np.exp(-((x - 10)**2) / 4.0)
+    # First time step using Taylor expansion (second-order accurate)
     psi[1, 1:-1] = psi[0, 1:-1] + 0.5 * (dt**2 / dx**2) * (psi[0, 2:] - 2*psi[0, 1:-1] + psi[0, :-2]) - 0.5 * dt**2 * V[1:-1] * psi[0, 1:-1]
     
     for n in range(1, Nt - 1):
@@ -116,7 +118,7 @@ if __name__ == "__main__":
     # 2. Train PINN
     print("Training PINN...")
     model = ReggeWheelerPINN(r_star_min, r_star_max, t_max)
-    optimizer = torch.optim.Adam(model.parameters(), lr=5e-3)
+    optimizer = torch.optim.Adam(model.parameters(), lr=2e-3)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.999)
     
     # Using a StepLR scheduler to reduce learning rate every 1000 epochs
