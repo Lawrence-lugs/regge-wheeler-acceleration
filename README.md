@@ -19,6 +19,8 @@
 - [ ] Fix problems with stream_sim
 - [ ] Regge Wheeler v3 with FD stencils for loss computation isn't working so well...
 - [ ] Possible tradeoff: we can "artificially" increase batch size without increasing L1 size by keeping the loss accumulating before backprop (hence we run "minibatches" before gradient update). This results in more energy and less throughput. This should be analyzed vs the L1 size (bigger = more access energy) and should yield some optimum.
+- [ ] FD-assisted residual computation in v3 may be different due to the added stencil gradient points. Removing grad from the stencil points introduces gradient instability... (more in your notes pls search stencil gradient)
+- [ ] Want to convert to Gaussian boundary conditions so that the waves actually decay (energy can escape/wave doesn't reflect)
 
 # Sample Outputs
 ## Regge-Wheeler Comparison

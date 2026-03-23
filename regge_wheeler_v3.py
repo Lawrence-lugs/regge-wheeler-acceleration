@@ -24,10 +24,10 @@ N_COLLOC_BASE = 3000
 N_COLLOC_MULTIPLIER = STENCIL_POINT_COUNT
 # Optional: when True, gradients flow only through center points. Stencil
 # neighbor outputs are detached and used only to form finite differences.
-BACKPROP_CENTER_ONLY = True
+BACKPROP_CENTER_ONLY = False
 # When BACKPROP_CENTER_ONLY=True, this controls how much gradient still flows
 # through stencil neighbors (0.0 -> none, 1.0 -> full).
-STENCIL_GRAD_WEIGHT = 0.0
+STENCIL_GRAD_WEIGHT = 0.2
 LR_FULL_GRAD = 2e-3
 LR_CENTER_ONLY = 5e-4
 USE_GRAD_CLIP = True
@@ -215,8 +215,8 @@ if __name__ == "__main__":
         (r_star_max - r_star_min) - 2.0 * DX_FD
     )
     print(
-        f"Using {N_colloc} center collocation points "
-        f"(base={N_COLLOC_BASE}, multiplier={N_COLLOC_MULTIPLIER}, "
+        f"Using {N_colloc} collocation points "
+        f"(centers={N_COLLOC_BASE}, multiplier={N_COLLOC_MULTIPLIER}, "
         f"stencil_points={STENCIL_POINT_COUNT})."
     )
     print(
