@@ -1,0 +1,2 @@
+experiment,primitive_kind,estimated_latency,compute_latency,memory_latency
+scalar_only,scalar,2088333908418.0,2088333908418.0,813125045.0

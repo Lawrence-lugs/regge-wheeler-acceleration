@@ -1,0 +1,4 @@
+experiment,primitive_kind,estimated_latency,compute_latency,memory_latency
+all_primitives,matrix,12833661900.0,12833661900.0,2997211950.0
+all_primitives,scalar,49.0,49.0,19.0
+all_primitives,vector,6432439750.0,5405800650.0,5701184875.0

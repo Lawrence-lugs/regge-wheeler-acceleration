@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Callable
 
@@ -184,16 +185,33 @@ class PrimitiveExecutor:
 
         if self.capabilities.has_matrix:
             tile = self.config.matrix
-            tile_calls = (
-                math.ceil(m_dim / tile.tile_m)
-                * math.ceil(n_dim / tile.tile_n)
-                * math.ceil(k_dim / tile.tile_k)
-                * repetitions
-            )
-            lat_per_tile = self.config.latencies.matrix_tile_latency(
-                tile.tile_m, tile.tile_k, tile.tile_n,
-            )
-            compute_latency = tile_calls * lat_per_tile
+
+            def _tile_extents(length: int, max_tile: int) -> list[int]:
+                full_tiles, remainder = divmod(length, max_tile)
+                extents = [max_tile] * full_tiles
+                if remainder:
+                    extents.append(remainder)
+                return extents
+
+            m_tile_extents = _tile_extents(m_dim, tile.tile_m)
+            k_tile_extents = _tile_extents(k_dim, tile.tile_k)
+            n_tile_extents = _tile_extents(n_dim, tile.tile_n)
+
+            tile_buckets: dict[tuple[int, int, int], int] = defaultdict(int)
+            for tile_m in m_tile_extents:
+                for tile_n in n_tile_extents:
+                    for tile_k in k_tile_extents:
+                        tile_buckets[(tile_m, tile_k, tile_n)] += repetitions
+
+            compute_latency = 0.0
+            tile_calls = 0
+            bucket_rows: list[tuple[tuple[int, int, int], int, float]] = []
+            for tile_shape, invocations in sorted(tile_buckets.items()):
+                tile_m, tile_k, tile_n = tile_shape
+                lat_per_tile = self.config.latencies.matrix_tile_latency(tile_m, tile_k, tile_n)
+                compute_latency += invocations * lat_per_tile
+                tile_calls += invocations
+                bucket_rows.append((tile_shape, invocations, lat_per_tile))
 
             # Memory: activations (m*k) + output (m*n) always from L1.
             # Weights (k*n) only if NOT local to the matrix unit.
@@ -203,25 +221,29 @@ class PrimitiveExecutor:
             memory_latency = float(self._memory_cycles(mem_elements) * repetitions)
             estimated = max(compute_latency, memory_latency)
 
-            append_stat_row(
-                {
-                    "experiment": self.capabilities.name,
-                    "section": section,
-                    "primitive_kind": "matrix",
-                    "primitive_name": f"{self.matrix_name_prefix}_matrix_multiply",
-                    "logical_operation": "matmul",
-                    "shape": f"({m_dim}, {k_dim}) x ({k_dim}, {n_dim})",
-                    "chunk_shape": f"({tile.tile_m}, {tile.tile_k}) x ({tile.tile_k}, {tile.tile_n})",
-                    "elements_per_invocation": tile.tile_m * tile.tile_n,
-                    "invocations": tile_calls,
-                    "latency_per_invocation": lat_per_tile,
-                    "compute_latency": compute_latency,
-                    "memory_latency": memory_latency,
-                    "estimated_latency": estimated,
-                    "fallback_from": "",
-                    "notes": "tiled matrix primitive",
-                }
-            )
+            if tile_calls > 0:
+                for tile_shape, invocations, lat_per_tile in bucket_rows:
+                    tile_m, tile_k, tile_n = tile_shape
+                    frac = invocations / tile_calls
+                    append_stat_row(
+                        {
+                            "experiment": self.capabilities.name,
+                            "section": section,
+                            "primitive_kind": "matrix",
+                            "primitive_name": f"{self.matrix_name_prefix}_matrix_multiply",
+                            "logical_operation": "matmul",
+                            "shape": f"({m_dim}, {k_dim}) x ({k_dim}, {n_dim})",
+                            "chunk_shape": f"({tile_m}, {tile_k}) x ({tile_k}, {tile_n})",
+                            "elements_per_invocation": tile_m * tile_n,
+                            "invocations": invocations,
+                            "latency_per_invocation": lat_per_tile,
+                            "compute_latency": invocations * lat_per_tile,
+                            "memory_latency": memory_latency * frac,
+                            "estimated_latency": estimated * frac,
+                            "fallback_from": "",
+                            "notes": "tiled matrix primitive",
+                        }
+                    )
             return result.astype(np.float32, copy=False)
 
         dot_products = m_dim * n_dim

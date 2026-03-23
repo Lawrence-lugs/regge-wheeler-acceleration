@@ -1,0 +1,263 @@
+row_id,experiment,section,primitive_kind,primitive_name,logical_operation,shape,chunk_shape,elements_per_invocation,invocations,latency_per_invocation,compute_latency,memory_latency,estimated_latency,fallback_from,notes
+1,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+2,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+3,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+4,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+5,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+6,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+7,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+8,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+9,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+10,scalar_vector_only,fd.potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+11,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+12,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+13,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+14,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+15,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+16,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+17,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+18,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+19,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+20,scalar_vector_only,fd.potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+21,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+22,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+23,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+24,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+25,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+26,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+27,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+28,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+29,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+30,scalar_vector_only,fd.potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+31,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+32,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+33,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+34,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+35,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+36,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+37,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+38,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+39,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+40,scalar_vector_only,fd.potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+41,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+42,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+43,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+44,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+45,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+46,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+47,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+48,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+49,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+50,scalar_vector_only,fd.potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+51,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+52,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+53,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_log,log,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+54,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+55,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+56,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+57,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+58,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+59,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+60,scalar_vector_only,fd.potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+61,scalar_vector_only,fd.potential,vector,4x_fp32_vector_div,div,"(200,)","(4,)",4,50,8.0,400.0,75.0,400.0,,elementwise
+62,scalar_vector_only,fd.potential,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+63,scalar_vector_only,fd.potential,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+64,scalar_vector_only,fd.potential,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+65,scalar_vector_only,fd.potential,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+66,scalar_vector_only,fd.potential,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+67,scalar_vector_only,fd.potential,vector,4x_fp32_vector_add,add,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+68,scalar_vector_only,fd.potential,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+69,scalar_vector_only,fd.initial_condition,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+70,scalar_vector_only,fd.initial_condition,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+71,scalar_vector_only,fd.initial_condition,vector,4x_fp32_vector_multiply,multiply,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+72,scalar_vector_only,fd.initial_condition,vector,4x_fp32_vector_exp,exp,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+73,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+74,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+75,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_sub,sub,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+76,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_sub,sub,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+77,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_add,add,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+78,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_add,add,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+79,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+80,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+81,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+82,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+83,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+84,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+85,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_add,add,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+86,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_add,add,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+87,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_sub,sub,"(198,)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+88,scalar_vector_only,fd.first_step,vector,4x_fp32_vector_sub,sub,"(198,)","(2,)",2,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+89,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+90,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+91,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+92,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+93,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_add,add,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+94,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_add,add,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+95,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+96,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+97,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+98,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+99,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+100,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+101,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+102,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_multiply,multiply,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+103,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+104,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_sub,sub,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+105,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_add,add,"(198,)","(4,)",4,19502,1.0,19502.0,29253.0,29253.0,,elementwise
+106,scalar_vector_only,fd.recurrent_update,vector,4x_fp32_vector_add,add,"(198,)","(2,)",2,398,1.0,398.0,597.0,597.0,,elementwise; tail loop
+107,scalar_vector_only,post.observer_index,vector,4x_fp32_vector_sub,sub,"(200,)","(4,)",4,50,1.0,50.0,75.0,75.0,,elementwise
+108,scalar_vector_only,post.observer_index,vector,4x_fp32_vector_abs,abs,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,unary
+109,scalar_vector_only,post.observer_index,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(200,)","(4,)",4,50,1.0,50.0,50.0,50.0,,reduction
+110,scalar_vector_only,post.observer_index,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,49,1.0,49.0,19.0,49.0,vector_reduce_finalize,combine vector partial sums
+111,scalar_vector_only,pinn.forward_surrogate.normalize,vector,4x_fp32_vector_div,div,"(3000, 1)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+112,scalar_vector_only,pinn.forward_surrogate.normalize,vector,4x_fp32_vector_sub,sub,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+113,scalar_vector_only,pinn.forward_surrogate.normalize,vector,4x_fp32_vector_div,div,"(3000, 1)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+114,scalar_vector_only,pinn.forward_surrogate.embedding,vector,4x_fp32_vector_multiply,multiply,"(96000, 2)","(4,)",4,480000000,1.0,480000000.0,720000000.0,720000000.0,,elementwise
+115,scalar_vector_only,pinn.forward_surrogate.embedding,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(2,)","(2,)",2,960000000,1.0,960000000.0,960000000.0,960000000.0,,reduction; tail loop
+116,scalar_vector_only,pinn.forward_surrogate.embedding,vector,4x_fp32_vector_multiply,multiply,"(3000, 32)","(4,)",4,240000000,1.0,240000000.0,360000000.0,360000000.0,,elementwise
+117,scalar_vector_only,pinn.forward_surrogate.embedding,vector,4x_fp32_vector_sin,sin,"(3000, 32)","(4,)",4,240000000,1.0,240000000.0,240000000.0,240000000.0,,unary
+118,scalar_vector_only,pinn.forward_surrogate.embedding,vector,4x_fp32_vector_cos,cos,"(3000, 32)","(4,)",4,240000000,1.0,240000000.0,240000000.0,240000000.0,,unary
+119,scalar_vector_only,pinn.forward_surrogate.dense1,vector,4x_fp32_vector_multiply,multiply,"(384000, 64)","(4,)",4,61440000000,1.0,61440000000.0,92160000000.0,92160000000.0,,elementwise
+120,scalar_vector_only,pinn.forward_surrogate.dense1,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(64,)","(4,)",4,61440000000,1.0,61440000000.0,61440000000.0,61440000000.0,,reduction
+121,scalar_vector_only,pinn.forward_surrogate.dense1,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,57600000000,1.0,57600000000.0,21600000000.0,57600000000.0,vector_reduce_finalize,combine vector partial sums
+122,scalar_vector_only,pinn.forward_surrogate.dense1,vector,4x_fp32_vector_tanh,tanh,"(3000, 128)","(4,)",4,960000000,1.0,960000000.0,960000000.0,960000000.0,,unary
+123,scalar_vector_only,pinn.forward_surrogate.dense_hidden_2,vector,4x_fp32_vector_multiply,multiply,"(384000, 128)","(4,)",4,122880000000,1.0,122880000000.0,184320000000.0,184320000000.0,,elementwise
+124,scalar_vector_only,pinn.forward_surrogate.dense_hidden_2,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(128,)","(4,)",4,122880000000,1.0,122880000000.0,122880000000.0,122880000000.0,,reduction
+125,scalar_vector_only,pinn.forward_surrogate.dense_hidden_2,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,119040000000,1.0,119040000000.0,44640000000.0,119040000000.0,vector_reduce_finalize,combine vector partial sums
+126,scalar_vector_only,pinn.forward_surrogate.dense_hidden_2,vector,4x_fp32_vector_tanh,tanh,"(3000, 128)","(4,)",4,960000000,1.0,960000000.0,960000000.0,960000000.0,,unary
+127,scalar_vector_only,pinn.forward_surrogate.dense_out,vector,4x_fp32_vector_multiply,multiply,"(3000, 128)","(4,)",4,960000000,1.0,960000000.0,1440000000.0,1440000000.0,,elementwise
+128,scalar_vector_only,pinn.forward_surrogate.dense_out,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(128,)","(4,)",4,960000000,1.0,960000000.0,960000000.0,960000000.0,,reduction
+129,scalar_vector_only,pinn.forward_surrogate.dense_out,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,930000000,1.0,930000000.0,348750000.0,930000000.0,vector_reduce_finalize,combine vector partial sums
+130,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_sub,sub,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+131,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+132,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+133,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_exp,exp,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+134,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_sub,sub,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+135,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+136,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+137,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+138,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+139,scalar_vector_only,pinn.forward_surrogate.hard_ansatz,vector,4x_fp32_vector_add,add,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+140,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+141,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+142,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+143,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+144,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+145,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+146,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+147,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+148,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+149,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_0,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+150,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+151,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+152,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+153,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+154,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+155,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+156,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+157,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+158,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+159,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_1,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+160,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+161,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+162,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+163,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+164,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+165,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+166,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+167,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+168,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+169,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_2,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+170,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+171,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+172,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+173,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+174,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+175,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+176,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+177,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+178,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+179,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_3,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+180,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+181,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+182,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+183,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+184,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+185,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+186,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+187,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+188,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+189,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_4,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+190,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+191,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+192,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_log,log,"(3000,)","(4,)",4,7500000,1.0,7500000.0,7500000.0,7500000.0,,unary
+193,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+194,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+195,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+196,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+197,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+198,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+199,scalar_vector_only,pinn.forward_surrogate.residual_potential.radius.newton_5,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+200,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_div,div,"(3000,)","(4,)",4,7500000,8.0,60000000.0,11250000.0,60000000.0,,elementwise
+201,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+202,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_sub,sub,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+203,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+204,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+205,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+206,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_add,add,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+207,scalar_vector_only,pinn.forward_surrogate.residual_potential,vector,4x_fp32_vector_multiply,multiply,"(3000,)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+208,scalar_vector_only,pinn.forward_surrogate.residual,vector,4x_fp32_vector_sub,sub,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+209,scalar_vector_only,pinn.forward_surrogate.residual,vector,4x_fp32_vector_multiply,multiply,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+210,scalar_vector_only,pinn.forward_surrogate.residual,vector,4x_fp32_vector_add,add,"(3000, 1)","(4,)",4,7500000,1.0,7500000.0,11250000.0,11250000.0,,elementwise
+211,scalar_vector_only,pinn.backward.dense_out_grad,vector,4x_fp32_vector_multiply,multiply,"(128, 3000)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+212,scalar_vector_only,pinn.backward.dense_out_grad,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(3000,)","(4,)",4,192000000,1.0,192000000.0,192000000.0,192000000.0,,reduction
+213,scalar_vector_only,pinn.backward.dense_out_grad,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,191744000,1.0,191744000.0,71904000.0,191744000.0,vector_reduce_finalize,combine vector partial sums
+214,scalar_vector_only,pinn.backward.dense_out_backprop,vector,4x_fp32_vector_multiply,multiply,"(384000, 1)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+215,scalar_vector_only,pinn.backward.tanh_out,vector,4x_fp32_vector_multiply,multiply,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+216,scalar_vector_only,pinn.backward.tanh_out,vector,4x_fp32_vector_sub,sub,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+217,scalar_vector_only,pinn.backward.tanh_out,vector,4x_fp32_vector_multiply,multiply,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+218,scalar_vector_only,pinn.backward.hidden_2.weight_grad,vector,4x_fp32_vector_multiply,multiply,"(16384, 3000)","(4,)",4,24576000000,1.0,24576000000.0,36864000000.0,36864000000.0,,elementwise
+219,scalar_vector_only,pinn.backward.hidden_2.weight_grad,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(3000,)","(4,)",4,24576000000,1.0,24576000000.0,24576000000.0,24576000000.0,,reduction
+220,scalar_vector_only,pinn.backward.hidden_2.weight_grad,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,24543232000,1.0,24543232000.0,9203712000.0,24543232000.0,vector_reduce_finalize,combine vector partial sums
+221,scalar_vector_only,pinn.backward.hidden_2.backprop,vector,4x_fp32_vector_multiply,multiply,"(384000, 128)","(4,)",4,24576000000,1.0,24576000000.0,36864000000.0,36864000000.0,,elementwise
+222,scalar_vector_only,pinn.backward.hidden_2.backprop,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(128,)","(4,)",4,24576000000,1.0,24576000000.0,24576000000.0,24576000000.0,,reduction
+223,scalar_vector_only,pinn.backward.hidden_2.backprop,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,23808000000,1.0,23808000000.0,8928000000.0,23808000000.0,vector_reduce_finalize,combine vector partial sums
+224,scalar_vector_only,pinn.backward.hidden_2.tanh,vector,4x_fp32_vector_multiply,multiply,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+225,scalar_vector_only,pinn.backward.hidden_2.tanh,vector,4x_fp32_vector_sub,sub,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+226,scalar_vector_only,pinn.backward.hidden_2.tanh,vector,4x_fp32_vector_multiply,multiply,"(3000, 128)","(4,)",4,192000000,1.0,192000000.0,288000000.0,288000000.0,,elementwise
+227,scalar_vector_only,pinn.backward.dense1_grad,vector,4x_fp32_vector_multiply,multiply,"(8192, 3000)","(4,)",4,12288000000,1.0,12288000000.0,18432000000.0,18432000000.0,,elementwise
+228,scalar_vector_only,pinn.backward.dense1_grad,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(3000,)","(4,)",4,12288000000,1.0,12288000000.0,12288000000.0,12288000000.0,,reduction
+229,scalar_vector_only,pinn.backward.dense1_grad,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,12271616000,1.0,12271616000.0,4601856000.0,12271616000.0,vector_reduce_finalize,combine vector partial sums
+230,scalar_vector_only,pinn.backward.dense1_backprop,vector,4x_fp32_vector_multiply,multiply,"(192000, 128)","(4,)",4,12288000000,1.0,12288000000.0,18432000000.0,18432000000.0,,elementwise
+231,scalar_vector_only,pinn.backward.dense1_backprop,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(128,)","(4,)",4,12288000000,1.0,12288000000.0,12288000000.0,12288000000.0,,reduction
+232,scalar_vector_only,pinn.backward.dense1_backprop,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,11904000000,1.0,11904000000.0,4464000000.0,11904000000.0,vector_reduce_finalize,combine vector partial sums
+233,scalar_vector_only,pinn.backward.fourier_grad,vector,4x_fp32_vector_multiply,multiply,"(64, 3000)","(4,)",4,96000000,1.0,96000000.0,144000000.0,144000000.0,,elementwise
+234,scalar_vector_only,pinn.backward.fourier_grad,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(3000,)","(4,)",4,96000000,1.0,96000000.0,96000000.0,96000000.0,,reduction
+235,scalar_vector_only,pinn.backward.fourier_grad,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,95872000,1.0,95872000.0,35952000.0,95872000.0,vector_reduce_finalize,combine vector partial sums
+236,scalar_vector_only,pinn.backward.fourier_backprop,vector,4x_fp32_vector_multiply,multiply,"(6000, 32)","(4,)",4,96000000,1.0,96000000.0,144000000.0,144000000.0,,elementwise
+237,scalar_vector_only,pinn.backward.fourier_backprop,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(32,)","(4,)",4,96000000,1.0,96000000.0,96000000.0,96000000.0,,reduction
+238,scalar_vector_only,pinn.backward.fourier_backprop,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,84000000,1.0,84000000.0,31500000.0,84000000.0,vector_reduce_finalize,combine vector partial sums
+239,scalar_vector_only,pinn.backward.embedding_merge,vector,4x_fp32_vector_multiply,multiply,"(3000, 64)","(4,)",4,96000000,1.0,96000000.0,144000000.0,144000000.0,,elementwise
+240,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+241,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+242,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+243,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+244,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+245,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+246,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+247,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+248,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+249,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+250,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+251,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+252,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+253,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_multiply,multiply,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+254,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(4,)",4,12512000,1.0,12512000.0,18767000.159821,18767000.159821,,elementwise
+255,scalar_vector_only,pinn.optimizer,vector,4x_fp32_vector_add,add,"(25025,)","(1,)",1,2000,1.0,2000.0,2999.8401789995205,2999.8401789995205,,elementwise; tail loop
+256,scalar_vector_only,post.rfft_surrogate,vector,4x_fp32_vector_multiply,multiply,"(199, 400)","(4,)",4,39800,1.0,39800.0,59700.0,59700.0,,elementwise
+257,scalar_vector_only,post.rfft_surrogate,vector,4x_fp32_vector_reduce_sum,reduce_sum,"(400,)","(4,)",4,39800,1.0,39800.0,39800.0,39800.0,,reduction
+258,scalar_vector_only,post.rfft_surrogate,scalar,fp32_scalar_add,add,"(1,)","(1,)",1,39402,1.0,39402.0,14776.0,39402.0,vector_reduce_finalize,combine vector partial sums
+259,scalar_vector_only,post.strain_scale,vector,4x_fp32_vector_multiply,multiply,"(199, 1)","(4,)",4,49,1.0,49.0,73.5,73.5,,elementwise
+260,scalar_vector_only,post.strain_scale,vector,4x_fp32_vector_multiply,multiply,"(199, 1)","(3,)",3,1,1.0,1.0,1.5,1.5,,elementwise; tail loop
+261,scalar_vector_only,post.strain_scale,vector,4x_fp32_vector_div,div,"(199, 1)","(4,)",4,98,8.0,784.0,147.0,784.0,,elementwise
+262,scalar_vector_only,post.strain_scale,vector,4x_fp32_vector_div,div,"(199, 1)","(3,)",3,2,8.0,16.0,3.0,16.0,,elementwise; tail loop
