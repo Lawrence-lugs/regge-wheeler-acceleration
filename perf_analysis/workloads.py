@@ -375,12 +375,15 @@ def simulate_pinn_rk1_training(executor: PrimitiveExecutor) -> None:
 
     Each training step performs one forward pass and one backward pass.
     For the forward pass, stencil points are packed into the batch dimension:
-    ``effective_batch = pinn_collocation_points * pinn_rk1_fd_stencil_evals``.
+    ``effective_batch = effective_centers * pinn_rk1_fd_stencil_evals`` where
+    ``effective_centers = pinn_collocation_points * pinn_rk1_collocation_multiplier``.
     There is no ``create_graph`` autograd overhead — PDE derivatives are
     assembled from the packed forward outputs in ``pinn_rk1.fd_combine.*``.
     """
     cfg = executor.config
-    effective_batch = cfg.pinn_collocation_points * cfg.pinn_rk1_fd_stencil_evals
+    effective_centers = cfg.pinn_collocation_points * cfg.pinn_rk1_collocation_multiplier
+    effective_batch = effective_centers * cfg.pinn_rk1_fd_stencil_evals
+    backward_batch = effective_centers if cfg.pinn_rk1_backprop_centers_only else effective_batch
     _simulate_network_forward(
         executor,
         batch_size=effective_batch,
@@ -389,12 +392,12 @@ def simulate_pinn_rk1_training(executor: PrimitiveExecutor) -> None:
     )
     _simulate_pinn_rk1_fd_combine(
         executor,
-        batch_size=cfg.pinn_collocation_points,
+        batch_size=effective_centers,
         repetitions=cfg.pinn_epochs,
     )
     _simulate_network_backward(
         executor,
-        batch_size=cfg.pinn_collocation_points,
+        batch_size=backward_batch,
         repetitions=cfg.pinn_epochs,
         section_prefix="pinn_rk1",
     )

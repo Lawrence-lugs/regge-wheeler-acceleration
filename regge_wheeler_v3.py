@@ -19,6 +19,19 @@ F_factor = 1.0
 # not the step sizes of the FD reference solver.
 DT_FD = 0.1
 DX_FD = 0.15
+STENCIL_POINT_COUNT = 5
+N_COLLOC_BASE = 3000
+N_COLLOC_MULTIPLIER = STENCIL_POINT_COUNT
+# Optional: when True, gradients flow only through center points. Stencil
+# neighbor outputs are detached and used only to form finite differences.
+BACKPROP_CENTER_ONLY = True
+# When BACKPROP_CENTER_ONLY=True, this controls how much gradient still flows
+# through stencil neighbors (0.0 -> none, 1.0 -> full).
+STENCIL_GRAD_WEIGHT = 0.0
+LR_FULL_GRAD = 2e-3
+LR_CENTER_ONLY = 5e-4
+USE_GRAD_CLIP = True
+GRAD_CLIP_MAX_NORM = 1.0
 
 
 def tortoise_to_r(r_star, M=1.0):
@@ -124,24 +137,41 @@ def pde_residual_fd(
     t_max_val: float,
     dt_fd: float = DT_FD,
     dx_fd: float = DX_FD,
+    backprop_center_only: bool = BACKPROP_CENTER_ONLY,
+    stencil_grad_weight: float = STENCIL_GRAD_WEIGHT,
 ):
     """PDE residual via a batch-enforced 5-point central stencil.
 
-    Collocation points are sampled from the interior so that (t±dt, x) and
-    (t, x±dx) always remain in-domain.  We then evaluate all stencil points in
-    a *single* batched model forward and split the result back into
-    {center, t+dt, t-dt, x+dx, x-dx}.  This keeps one forward pass and one
-    backward pass per training step.
+        Collocation points are sampled from the interior so that (t±dt, x) and
+        (t, x±dx) always remain in-domain.
+
+        - ``backprop_center_only=False``: evaluate {center, t+dt, t-dt, x+dx, x-dx}
+            in one batched forward and allow gradients through all stencil points.
+        - ``backprop_center_only=True``: split [centers | stencil neighbors], keep
+            gradients on centers only, and evaluate neighbors under ``torch.no_grad()``.
     """
     # Expected shape is (N, 1); residual formulas are elementwise.
     if t.ndim != 2 or x.ndim != 2 or t.shape != x.shape:
         raise ValueError("t and x must have identical shape (N, 1).")
 
-    # Build an enforced central-difference stencil in one batched forward call.
+    # One batched stencil forward for both modes.
     t_stencil = torch.cat([t, t + dt_fd, t - dt_fd, t, t], dim=0)
     x_stencil = torch.cat([x, x, x, x + dx_fd, x - dx_fd], dim=0)
     psi_stencil = model(t_stencil, x_stencil)
     psi_c, psi_tp, psi_tm, psi_xp, psi_xm = psi_stencil.chunk(5, dim=0)
+
+    if backprop_center_only:
+        if not (0.0 <= stencil_grad_weight <= 1.0):
+            raise ValueError("stencil_grad_weight must be in [0, 1].")
+
+        def _mask_stencil_grad(tensor):
+            # Value is unchanged; gradient scales by stencil_grad_weight.
+            return tensor.detach() + stencil_grad_weight * (tensor - tensor.detach())
+
+        psi_tp = _mask_stencil_grad(psi_tp)
+        psi_tm = _mask_stencil_grad(psi_tm)
+        psi_xp = _mask_stencil_grad(psi_xp)
+        psi_xm = _mask_stencil_grad(psi_xm)
 
     # Central differences for second derivatives.
     dt2 = dt_fd**2
@@ -153,7 +183,7 @@ def pde_residual_fd(
     r_np = tortoise_to_r(x.detach().cpu().numpy(), M)
     r_tensor = torch.tensor(r_np, dtype=torch.float32, device=x.device)
     V_tensor = (1.0 - 2.0 * M / r_tensor) * (
-        l * (l + 1) / r_tensor**2 + (1.0 - s**2) * 2.0 * M / r_tensor**3
+        l * (l + 1) / 2 + (1.0 - s**2) * 2.0 * M / r_tensor**3
     )
 
     residual = psi_tt - psi_xx + V_tensor * psi_c
@@ -174,14 +204,28 @@ if __name__ == "__main__":
     # 2. Train PINN with RK1 finite-difference residual
     print("Training PINN (RK1 FD residual)...")
     model = ReggeWheelerPINN(r_star_min, r_star_max, t_max)
-    optimizer = torch.optim.Adam(model.parameters(), lr=2e-3)
+    lr = LR_CENTER_ONLY if BACKPROP_CENTER_ONLY else LR_FULL_GRAD
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.999)
 
-    N_colloc = 3000
+    N_colloc = N_COLLOC_BASE * N_COLLOC_MULTIPLIER
     # Enforce interior collocation points so the 5-point stencil is always valid.
     t_colloc = DT_FD + torch.rand(N_colloc, 1) * (t_max - 2.0 * DT_FD)
     x_colloc = (r_star_min + DX_FD) + torch.rand(N_colloc, 1) * (
         (r_star_max - r_star_min) - 2.0 * DX_FD
+    )
+    print(
+        f"Using {N_colloc} center collocation points "
+        f"(base={N_COLLOC_BASE}, multiplier={N_COLLOC_MULTIPLIER}, "
+        f"stencil_points={STENCIL_POINT_COUNT})."
+    )
+    print(
+        f"Center-only backprop mode: {BACKPROP_CENTER_ONLY} "
+        f"(stencil_grad_weight={STENCIL_GRAD_WEIGHT})."
+    )
+    print(
+        f"Optimizer lr={lr:.2e}, grad_clip={USE_GRAD_CLIP}, "
+        f"clip_max_norm={GRAD_CLIP_MAX_NORM}."
     )
 
     epochs = 2000
@@ -202,8 +246,12 @@ if __name__ == "__main__":
             t_max_val=t_max,
             dt_fd=DT_FD,
             dx_fd=DX_FD,
+            backprop_center_only=BACKPROP_CENTER_ONLY,
+            stencil_grad_weight=STENCIL_GRAD_WEIGHT,
         )
         loss.backward()
+        if USE_GRAD_CLIP:
+            torch.nn.utils.clip_grad_norm_(model.parameters(), max_norm=GRAD_CLIP_MAX_NORM)
         optimizer.step()
         scheduler.step()
 

@@ -28,7 +28,7 @@ Two training-cost models are available, selected via `AnalysisConfig.pinn_model_
 | Version | `pinn_model_version` | Description |
 |---------|----------------------|-------------|
 | v2 autograd | `"v2_autograd"` (default) | Mirrors `regge_wheeler_v2.py`. PDE derivatives obtained via `torch.autograd.grad(create_graph=True)`, which requires building and traversing a higher-order computation graph. The overhead is amortised into the forward-pass surrogate via `pinn_forward_pass_equivalents` (default 5). One standard backward pass for the parameter update. |
-| v3 RK1 FD | `"v3_rk1_fd"` | Mirrors `regge_wheeler_v3.py`. PDE derivatives are approximated with a central finite-difference stencil packed into the batch dimension: center, t+Δt, t-Δt, x+Δx, x-Δx. This keeps one forward pass and one backward pass per training step. No `create_graph` autograd is required. `pinn_rk1_fd_stencil_evals` (default 5) is a batch expansion factor, not extra forward repetitions. |
+| v3 RK1 FD | `"v3_rk1_fd"` | Mirrors `regge_wheeler_v3.py`. PDE derivatives are approximated with a central finite-difference stencil packed into the batch dimension: center, t+Δt, t-Δt, x+Δx, x-Δx. No `create_graph` autograd is required. `pinn_rk1_fd_stencil_evals` (default 5) is a stencil batch expansion factor, `pinn_rk1_collocation_multiplier` scales independent center points, and `pinn_rk1_backprop_centers_only` optionally backpropagates only through center points. |
 
 To run with the v3 model, pass the config explicitly:
 
@@ -60,7 +60,7 @@ The main parameters are in [config.py](/workspaces/torch_dev/perf_analysis/confi
 
 - The Lambert W inverse in the Regge-Wheeler potential is approximated with a Newton solve expressed only in elementary operations.
 - v2: PyTorch autograd internals are approximated with explicit forward/backward surrogate kernels for the dense network and residual construction.  `pinn_forward_pass_equivalents = 5` encodes 1 actual forward pass plus 4 forward-equivalent costs for the create_graph derivative chain.
-- v3: Finite-difference stencil points are packed into the batch as `effective_batch = pinn_collocation_points * pinn_rk1_fd_stencil_evals` with one forward call per step and no create_graph overhead.
+- v3: Finite-difference stencil points are packed into the batch as `effective_batch = pinn_collocation_points * pinn_rk1_collocation_multiplier * pinn_rk1_fd_stencil_evals` with no create_graph overhead. Backprop batch is `effective_centers` when `pinn_rk1_backprop_centers_only=True`, otherwise `effective_batch`.
 - The FFT stage is represented as a DFT-style matrix surrogate because the target primitive set is scalar/vector/matrix rather than butterfly-specific FFT primitives.
 
 ## Run

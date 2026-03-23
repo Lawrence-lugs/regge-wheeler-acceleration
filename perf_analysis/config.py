@@ -106,6 +106,12 @@ class AnalysisConfig:
     # (center, t+dt, t-dt, x+dx, x-dx) in one model forward call.
     pinn_model_version: str = "v2_autograd"  # "v2_autograd" | "v3_rk1_fd"
     pinn_rk1_fd_stencil_evals: int = 5
+    # Additional multiplier on independent center collocation points for v3.
+    # effective_centers = pinn_collocation_points * pinn_rk1_collocation_multiplier
+    pinn_rk1_collocation_multiplier: int = 1
+    # If True, only center collocation points contribute gradients in v3 RK1.
+    # Stencil neighbors are used for FD approximation but detached in backprop.
+    pinn_rk1_backprop_centers_only: bool = False
     adam_elementwise_ops: int = 8
     dft_surrogate_repetitions: int = 2
     random_seed: int = 7
@@ -127,6 +133,10 @@ class AnalysisConfig:
             )
         if self.pinn_rk1_fd_stencil_evals < 1:
             raise ValueError("pinn_rk1_fd_stencil_evals must be at least 1.")
+        if self.pinn_rk1_collocation_multiplier < 1:
+            raise ValueError("pinn_rk1_collocation_multiplier must be at least 1.")
+        if not isinstance(self.pinn_rk1_backprop_centers_only, bool):
+            raise ValueError("pinn_rk1_backprop_centers_only must be a bool.")
 
 
 EXPERIMENTS: tuple[CapabilityProfile, ...] = (

@@ -18,6 +18,7 @@
 
 - [ ] Fix problems with stream_sim
 - [ ] Regge Wheeler v3 with FD stencils for loss computation isn't working so well...
+- [ ] Possible tradeoff: we can "artificially" increase batch size without increasing L1 size by keeping the loss accumulating before backprop (hence we run "minibatches" before gradient update). This results in more energy and less throughput. This should be analyzed vs the L1 size (bigger = more access energy) and should yield some optimum.
 
 # Sample Outputs
 ## Regge-Wheeler Comparison
